@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { listTasks, upsertTask, archiveTask } from '../data/repo';
+import { listTasks, upsertTask, archiveTask, getFadeSuggestions, applyFadeStep } from '../data/repo';
 import { useApp } from '../state/AppContext';
 import ImagePicker from '../components/ImagePicker';
 import ImageDisplay from '../components/ImageDisplay';
@@ -16,14 +16,25 @@ export default function TasksScreen() {
   const { currentChildId, refresh } = useApp();
   const [tasks, setTasks] = useState([]);
   const [editing, setEditing] = useState(null);
+  const [fades, setFades] = useState([]);
+  const [dismissedFades, setDismissedFades] = useState([]);
 
   async function loadTasks() {
     if (!currentChildId) return;
     const all = await listTasks(currentChildId, { activeOnly: false });
     setTasks(all);
+    setFades(await getFadeSuggestions(currentChildId));
   }
 
   useEffect(() => { loadTasks(); }, [currentChildId]);
+
+  async function startFading(taskId) {
+    await applyFadeStep(taskId);
+    await loadTasks();
+    refresh();
+  }
+
+  const visibleFades = fades.filter(f => !dismissedFades.includes(f.taskId));
 
   async function save() {
     if (!editing.label.trim()) return;
@@ -43,6 +54,33 @@ export default function TasksScreen() {
   return (
     <div className={styles.wrap}>
       <h1 className={styles.h1}>Tasks</h1>
+
+      {!editing && visibleFades.map(f => (
+        <div key={f.taskId} className={styles.fade} role="status">
+          <span className={styles.fadeIcon}>🌱</span>
+          <div className={styles.fadeBody}>
+            <p className={styles.fadeTitle}>A win to celebrate!</p>
+            <p className={styles.fadeText}>
+              <strong>{f.label}</strong> is happening reliably ({f.days} days in the
+              last {f.window}). Ready to start fading?{' '}
+              {f.nextMax < f.currentMax
+                ? `Lower it to ${f.nextMax}★.`
+                : 'It can be removed once it sticks.'}
+            </p>
+            <div className={styles.fadeActions}>
+              <button className={styles.fadeStart} onClick={() => startFading(f.taskId)}>
+                Start fading
+              </button>
+              <button
+                className={styles.fadeLater}
+                onClick={() => setDismissedFades(d => [...d, f.taskId])}
+              >
+                Not yet
+              </button>
+            </div>
+          </div>
+        </div>
+      ))}
 
       {!editing && (
         <button className={styles.addBtn} onClick={() => setEditing({ ...BLANK_TASK })}>

@@ -10,4 +10,5 @@
 .toggle.on .thumb { transform: translateX(22px); }
 .section { margin-top: 16px; display: flex; flex-direction: column; gap: 10px; }
 .sectionTitle { font-family: var(--font-display); font-size: 18px; color: var(--ink); }
+.sectionNote { font-size: 13px; color: var(--ink-soft); line-height: 1.4; }
 .dataBtn { min-height: var(--tap-min); background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); font-size: 16px; font-weight: 600; color: var(--ink); display: flex; align-items: center; justify-content: center; cursor: pointer; }
