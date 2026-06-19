@@ -1,0 +1,37 @@
+{
+  "navigationFallback": {
+    "rewrite": "/index.html",
+    "exclude": [
+      "/*.{css,js,json,png,jpg,jpeg,gif,svg,ico,woff,woff2,webmanifest}",
+      "/icons/*",
+      "/service-worker.js"
+    ]
+  },
+  "mimeTypes": {
+    ".json": "application/json",
+    ".svg": "image/svg+xml",
+    ".webmanifest": "application/manifest+json"
+  },
+  "globalHeaders": {
+    "cache-control": "no-cache"
+  },
+  "routes": [
+    {
+      "route": "/service-worker.js",
+      "headers": {
+        "cache-control": "no-cache, no-store, must-revalidate"
+      }
+    },
+    {
+      "route": "/index.html",
+      "headers": {
+        "cache-control": "no-cache, no-store, must-revalidate"
+      }
+    }
+  ],
+  "responseOverrides": {
+    "404": {
+      "rewrite": "/index.html"
+    }
+  }
+}
