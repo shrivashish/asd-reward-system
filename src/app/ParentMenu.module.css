@@ -1,0 +1,26 @@
+.nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--surface);
+  border-top: 1px solid var(--line);
+  display: flex;
+  z-index: 20;
+}
+.item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 4px;
+  min-height: var(--tap-min);
+  color: var(--ink-soft);
+  transition: color var(--anim-dur);
+  font-size: 10px;
+  gap: 2px;
+}
+.item.active { color: var(--teal); }
+.icon { font-size: 20px; }
+.label { font-family: var(--font-body); font-weight: 600; }

@@ -1,0 +1,40 @@
+.wrap { display: flex; flex-direction: column; gap: 12px; }
+.prompt {
+  font-family: var(--font-display);
+  font-size: 20px;
+  color: var(--ink);
+  text-align: center;
+}
+.note {
+  background: var(--surface-2);
+  border-radius: var(--radius);
+  padding: 10px 14px;
+  font-size: 14px;
+  color: var(--ink-soft);
+  border-left: 3px solid var(--teal);
+}
+.options { display: flex; flex-direction: column; gap: 8px; }
+.option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: var(--tap-min);
+  padding: 12px 16px;
+  background: var(--surface-2);
+  border-radius: var(--radius);
+  font-size: 16px;
+  color: var(--ink);
+  text-align: left;
+  width: 100%;
+  transition: background var(--anim-dur);
+}
+.option:active { background: var(--line); }
+.option.proceed { background: var(--teal); color: white; }
+.optIcon { font-size: 20px; width: 28px; flex-shrink: 0; }
+.cancelLink {
+  align-self: center;
+  color: var(--ink-soft);
+  font-size: 15px;
+  padding: 8px;
+  min-height: 44px;
+}

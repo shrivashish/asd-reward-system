@@ -1,0 +1,49 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(36,51,52,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: 24px;
+}
+.sheet {
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  padding: 32px 24px;
+  width: 100%;
+  max-width: 360px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.q {
+  font-family: var(--font-display);
+  font-size: 22px;
+  text-align: center;
+  color: var(--ink);
+}
+.input {
+  font-size: 28px;
+  font-family: var(--font-display);
+  text-align: center;
+  border: 2px solid var(--line);
+  border-radius: var(--radius);
+  padding: 12px;
+  width: 100%;
+  color: var(--ink);
+  background: var(--surface-2);
+}
+.error { color: var(--coral); text-align: center; font-size: 14px; }
+.actions { display: flex; gap: 12px; }
+.cancel, .confirm {
+  flex: 1;
+  min-height: var(--tap-min);
+  border-radius: var(--radius);
+  font-size: 17px;
+  font-family: var(--font-body);
+  font-weight: 600;
+}
+.cancel { background: var(--surface-2); color: var(--ink-soft); }
+.confirm { background: var(--teal); color: white; }

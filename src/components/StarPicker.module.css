@@ -1,0 +1,18 @@
+.wrap { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+.label { font-size: 16px; color: var(--ink-soft); }
+.stars { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+.star {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  font-size: 24px;
+  background: var(--surface-2);
+  color: var(--line);
+  transition: background var(--anim-dur), color var(--anim-dur), transform var(--anim-dur);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.star.active { background: var(--gold); color: white; transform: scale(1.1); }
+.star.zero { font-size: 18px; color: var(--ink-soft); }
+.hint { font-size: 14px; color: var(--ink-soft); min-height: 20px; text-align: center; }
