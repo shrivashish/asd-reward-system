@@ -1,2 +1,2 @@
 # asd-reward-system
-Android app for giving 
+Android app for reward system for autism kids.
