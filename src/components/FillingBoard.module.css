@@ -1,0 +1,27 @@
+.board {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  justify-content: center;
+  padding: 8px 0;
+}
+.slot {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  background: var(--surface-2);
+  border: 2px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background var(--anim-dur), border-color var(--anim-dur);
+}
+.slot.filled {
+  background: var(--gold);
+  border-color: var(--gold-deep);
+}
+.star {
+  font-size: 17px;
+  color: white;
+  line-height: 1;
+}

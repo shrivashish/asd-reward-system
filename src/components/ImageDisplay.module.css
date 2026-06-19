@@ -1,0 +1,15 @@
+.img {
+  border-radius: 12px;
+  object-fit: cover;
+  display: block;
+  flex-shrink: 0;
+}
+.emoji {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  background: var(--surface-2);
+  user-select: none;
+  flex-shrink: 0;
+}

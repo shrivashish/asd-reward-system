@@ -1,0 +1,3 @@
+.pips { display: flex; gap: 2px; flex-wrap: wrap; }
+.filled { color: var(--gold); font-size: 14px; }
+.empty { color: var(--line); font-size: 14px; }

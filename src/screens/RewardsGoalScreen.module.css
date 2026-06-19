@@ -1,0 +1,25 @@
+.wrap { display: flex; flex-direction: column; gap: 16px; }
+.h1 { font-family: var(--font-display); font-size: 26px; color: var(--ink); }
+.addBtn { min-height: var(--tap-min); background: var(--gold); color: white; border-radius: var(--radius); font-size: 17px; font-weight: 700; }
+.editor { background: var(--surface); border-radius: var(--radius-lg); padding: 20px; display: flex; flex-direction: column; gap: 14px; box-shadow: var(--shadow); }
+.editorTitle { font-family: var(--font-display); font-size: 20px; color: var(--ink); }
+.field { display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 700; color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.04em; }
+.fieldLabel { font-size: 13px; font-weight: 700; color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.04em; }
+.input { border: 1px solid var(--line); border-radius: var(--radius); padding: 10px 14px; font-size: 16px; background: var(--surface-2); color: var(--ink); font-family: var(--font-body); width: 100%; }
+.editorActions { display: flex; gap: 10px; margin-top: 4px; }
+.cancelBtn, .saveBtn { flex: 1; min-height: var(--tap-min); border-radius: var(--radius); font-size: 17px; font-weight: 700; }
+.cancelBtn { background: var(--surface-2); color: var(--ink-soft); }
+.saveBtn { background: var(--gold); color: white; }
+.saveBtn:disabled { opacity: 0.5; }
+.list { display: flex; flex-direction: column; gap: 10px; }
+.empty { text-align: center; color: var(--ink-soft); padding: 24px; font-size: 16px; }
+.row { display: flex; align-items: center; gap: 12px; background: var(--surface); border-radius: var(--radius); padding: 12px; box-shadow: var(--shadow); }
+.row.current { border: 2px solid var(--gold); }
+.rowInfo { flex: 1; display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.rowLabel { font-size: 16px; font-weight: 600; color: var(--ink); }
+.rowMeta { font-size: 12px; color: var(--ink-soft); }
+.currentTag { font-size: 12px; color: var(--gold-deep); font-weight: 700; }
+.rowActions { display: flex; gap: 6px; flex-shrink: 0; }
+.editBtn, .goalBtn { min-height: 40px; padding: 6px 12px; border-radius: var(--radius); font-size: 13px; font-weight: 700; }
+.editBtn { background: var(--surface-2); color: var(--ink); }
+.goalBtn { background: var(--gold); color: white; }
