@@ -27,11 +27,14 @@ const GROUPS = [
 ];
 
 const PUZZLE_TYPES = [
-  { value: 'random',     label: 'Random',      desc: 'Different each time' },
-  { value: 'shapeMatch', label: 'Shape match',  desc: 'Tap the named shape' },
-  { value: 'colorMatch', label: 'Color match',  desc: 'Tap the named colour' },
-  { value: 'counting',   label: 'Counting',     desc: 'Count the stars' },
-  { value: 'emojiPair',  label: 'Emoji match',  desc: 'Find the matching animal' },
+  { value: 'random',         label: 'Random',         desc: 'Different each time' },
+  { value: 'shapeMatch',     label: 'Shape match',    desc: 'Tap the named shape' },
+  { value: 'colorMatch',     label: 'Color match',    desc: 'Tap the named colour' },
+  { value: 'counting',       label: 'Counting',       desc: 'Count the stars' },
+  { value: 'emojiPair',      label: 'Emoji match',    desc: 'Find the matching animal' },
+  { value: 'addition',       label: 'Addition',       desc: 'Add two single-digit numbers' },
+  { value: 'subtraction',    label: 'Subtraction',    desc: 'Subtract single-digit numbers' },
+  { value: 'multiplication', label: 'Multiplication', desc: 'Multiply single-digit numbers' },
 ];
 
 export default function SettingsScreen() {

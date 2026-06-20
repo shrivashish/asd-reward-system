@@ -35,8 +35,30 @@ function shuffle(arr) {
   return [...arr].sort(() => Math.random() - 0.5);
 }
 
+// Returns 2 nearby wrong answers, randomised from a ±5 window around correct.
+function wrongAnswers(correct) {
+  const pool = [];
+  for (let d = 1; d <= 5; d++) {
+    if (correct - d >= 0) pool.push(correct - d);
+    pool.push(correct + d);
+  }
+  return shuffle(pool).slice(0, 2);
+}
+
+function mathChoices(correct) {
+  const [w1, w2] = wrongAnswers(correct);
+  return shuffle([
+    { display: String(correct), isAnswer: true },
+    { display: String(w1), isAnswer: false },
+    { display: String(w2), isAnswer: false },
+  ]);
+}
+
 function generatePuzzle(type) {
-  const types = ['shapeMatch', 'colorMatch', 'counting', 'emojiPair'];
+  const types = [
+    'shapeMatch', 'colorMatch', 'counting', 'emojiPair',
+    'addition', 'subtraction', 'multiplication',
+  ];
   const effectiveType = type === 'random'
     ? types[Math.floor(Math.random() * types.length)]
     : type;
@@ -72,6 +94,36 @@ function generatePuzzle(type) {
         { display: String(others[0]), isAnswer: false },
         { display: String(others[1]), isAnswer: false },
       ]),
+    };
+  }
+
+  if (effectiveType === 'addition') {
+    const a = Math.floor(Math.random() * 9) + 1; // 1–9
+    const b = Math.floor(Math.random() * 9) + 1;
+    return {
+      question: `${a} + ${b} = ?`,
+      prompt: null,
+      choices: mathChoices(a + b),
+    };
+  }
+
+  if (effectiveType === 'subtraction') {
+    const a = Math.floor(Math.random() * 8) + 2; // 2–9
+    const b = Math.floor(Math.random() * (a - 1)) + 1; // 1 to a−1 (result always ≥ 1)
+    return {
+      question: `${a} − ${b} = ?`,
+      prompt: null,
+      choices: mathChoices(a - b),
+    };
+  }
+
+  if (effectiveType === 'multiplication') {
+    const a = Math.floor(Math.random() * 9) + 1; // 1–9
+    const b = Math.floor(Math.random() * 9) + 1;
+    return {
+      question: `${a} × ${b} = ?`,
+      prompt: null,
+      choices: mathChoices(a * b),
     };
   }
 
