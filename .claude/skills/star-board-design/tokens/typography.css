@@ -1,0 +1,33 @@
+/* Star Board — Typography tokens
+   Two families: Fredoka (rounded, friendly) for display & labels;
+   Nunito (humanist, highly legible) for body & UI text.
+   Large, generous sizing — this is an image-first, low-literacy-friendly
+   product, so text rarely goes below 14px and tap labels stay big. */
+
+:root {
+  --font-display: 'Fredoka', system-ui, sans-serif;
+  --font-body: 'Nunito', system-ui, sans-serif;
+
+  /* Weights */
+  --weight-regular: 400;
+  --weight-medium: 600;   /* Fredoka display default */
+  --weight-bold: 700;     /* Nunito emphasis */
+  --weight-heavy: 800;    /* Nunito numerals / strong */
+
+  /* Type scale (px) */
+  --text-2xs: 11px;  /* badge text, tiny meta */
+  --text-xs: 12px;   /* nav labels, captions */
+  --text-sm: 13px;   /* field labels (uppercase) */
+  --text-base: 16px; /* body — base font-size */
+  --text-md: 17px;   /* button text */
+  --text-lg: 20px;   /* card titles (Fredoka) */
+  --text-xl: 22px;   /* sheet / dialog titles */
+  --text-2xl: 26px;  /* screen H1 */
+  --text-3xl: 32px;  /* big star counts */
+  --text-4xl: 48px;  /* celebration count */
+
+  --leading-tight: 1.2;  /* display headings */
+  --leading-normal: 1.5; /* body copy */
+
+  --tracking-label: 0.04em; /* uppercase field labels */
+}

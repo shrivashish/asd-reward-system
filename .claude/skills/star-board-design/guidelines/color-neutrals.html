@@ -1,0 +1,22 @@
+<!-- @dsCard group="Colors" viewport="700x170" name="Neutrals & Surfaces" subtitle="Cool gray-green canvas, white cards, deep teal-gray ink" -->
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8" />
+<link rel="stylesheet" href="../styles.css" />
+<style>
+  body { background: var(--surface); font-family: var(--font-body); padding: 18px; }
+  .row { display: flex; gap: 12px; }
+  .sw { flex: 1; border: 1px solid var(--line); border-radius: var(--radius); padding: 12px; display: flex; flex-direction: column; gap: 3px; min-height: 110px; justify-content: flex-end; }
+  .name { font-weight: 800; font-size: 13px; }
+  .hex { font-size: 11px; opacity: .8; }
+  .vartxt { font-size: 10px; opacity: .7; }
+</style></head>
+<body>
+  <div class="row">
+    <div class="sw" style="background:var(--bg)"><span class="name" style="color:var(--ink)">Canvas</span><span class="hex" style="color:var(--ink-soft)">#EDF1F1</span><span class="vartxt" style="color:var(--ink-soft)">--bg</span></div>
+    <div class="sw" style="background:var(--surface)"><span class="name" style="color:var(--ink)">Surface</span><span class="hex" style="color:var(--ink-soft)">#FFFFFF</span><span class="vartxt" style="color:var(--ink-soft)">--surface</span></div>
+    <div class="sw" style="background:var(--surface-2)"><span class="name" style="color:var(--ink)">Inset</span><span class="hex" style="color:var(--ink-soft)">#F6F8F8</span><span class="vartxt" style="color:var(--ink-soft)">--surface-2</span></div>
+    <div class="sw" style="background:var(--ink)"><span class="name" style="color:#fff">Ink</span><span class="hex" style="color:#fff">#243334</span><span class="vartxt" style="color:#fff">--ink</span></div>
+    <div class="sw" style="background:var(--ink-soft)"><span class="name" style="color:#fff">Ink soft</span><span class="hex" style="color:#fff">#5C6B6C</span><span class="vartxt" style="color:#fff">--ink-soft</span></div>
+    <div class="sw" style="background:var(--line)"><span class="name" style="color:var(--ink)">Line</span><span class="hex" style="color:var(--ink-soft)">#E1E8E8</span><span class="vartxt" style="color:var(--ink-soft)">--line</span></div>
+  </div>
+</body></html>

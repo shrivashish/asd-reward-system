@@ -1,0 +1,22 @@
+<!-- @dsCard group="Colors" viewport="700x150" name="Action — Teal" subtitle="The single action color; gold/coral are reserved" -->
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8" />
+<link rel="stylesheet" href="../styles.css" />
+<style>
+  body { background: var(--surface); font-family: var(--font-body); padding: 18px; }
+  .row { display: flex; gap: 14px; }
+  .sw { flex: 1; border-radius: var(--radius); padding: 14px; display: flex; flex-direction: column; gap: 4px; min-height: 96px; justify-content: flex-end; box-shadow: var(--shadow); }
+  .name { font-weight: 800; font-size: 14px; }
+  .hex { font-size: 12px; font-family: var(--font-body); opacity: .85; }
+  .vartxt { font-size: 11px; opacity: .8; }
+</style></head>
+<body>
+  <div class="row">
+    <div class="sw" style="background:var(--teal);color:#fff">
+      <span class="name">Teal — primary</span><span class="hex">#2F9E92</span><span class="vartxt">--teal · --action</span>
+    </div>
+    <div class="sw" style="background:var(--teal-deep);color:#fff">
+      <span class="name">Teal deep</span><span class="hex">#1F6E66</span><span class="vartxt">--teal-deep · --action-press</span>
+    </div>
+  </div>
+</body></html>

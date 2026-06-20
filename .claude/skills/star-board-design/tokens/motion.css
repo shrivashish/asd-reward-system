@@ -1,0 +1,20 @@
+/* Star Board — Motion tokens
+   Motion is gentle and short. Calm mode and reduced-motion both
+   collapse animation to zero — content must always read without it.
+   Set [data-calm="true"] on an ancestor to honor Calm mode. */
+
+:root {
+  --anim-dur: 0.2s; /* @kind other */ /* standard transition */
+  --anim-ease: ease-out; /* @kind other */ /* default easing — settle, no bounce */
+  --anim-ease-settle: cubic-bezier(0.2, 0.8, 0.2, 1); /* @kind other */ /* award/celebration */
+}
+
+[data-calm="true"] {
+  --anim-dur: 0s; /* @kind other */
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --anim-dur: 0s; /* @kind other */
+  }
+}

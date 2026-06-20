@@ -1,0 +1,51 @@
+/* Star Board — Color tokens
+   A calm, low-arousal palette. Cool gray-green surfaces keep the
+   screen quiet; teal is the single action color; gold belongs to
+   stars and rewards only; coral is reserved for destructive intent. */
+
+:root {
+  /* Base palette */
+  --bg: #EDF1F1;        /* app canvas — cool gray-green */
+  --surface: #FFFFFF;   /* cards, sheets */
+  --surface-2: #F6F8F8; /* insets, fields, quiet fills */
+  --ink: #243334;       /* primary text — deep teal-gray, not black */
+  --ink-soft: #5C6B6C;  /* secondary text, meta */
+  --line: #E1E8E8;      /* hairlines, empty pips, borders */
+
+  --teal: #2F9E92;      /* primary action */
+  --teal-deep: #1F6E66; /* teal pressed / accent */
+  --gold: #F2B632;      /* stars + rewards */
+  --gold-deep: #D99A14; /* gold pressed / filled border */
+  --coral: #F47B5A;     /* destructive only (archive, errors) */
+  --plum: #8C7AB0;      /* informational accent (e.g. First-try badge) */
+
+  /* Semantic aliases — prefer these in product code */
+  --text-strong: var(--ink);
+  --text-muted: var(--ink-soft);
+  --surface-app: var(--bg);
+  --surface-card: var(--surface);
+  --surface-inset: var(--surface-2);
+  --border-hairline: var(--line);
+
+  --action: var(--teal);
+  --action-press: var(--teal-deep);
+  --reward: var(--gold);
+  --reward-press: var(--gold-deep);
+  --danger: var(--coral);
+  --info: var(--plum);
+
+  --overlay-scrim: rgba(36, 51, 52, 0.6); /* modal backdrop */
+}
+
+/* High-contrast accessibility theme (Settings → High contrast).
+   Set [data-contrast="high"] on <html> or any ancestor. */
+[data-contrast="high"] {
+  --bg: #000000;
+  --surface: #111111;
+  --surface-2: #1A1A1A;
+  --ink: #FFFFFF;
+  --ink-soft: #CCCCCC;
+  --line: #444444;
+  --teal: #00FFE5;
+  --gold: #FFD700;
+}

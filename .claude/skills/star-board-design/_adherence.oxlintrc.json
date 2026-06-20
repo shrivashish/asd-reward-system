@@ -1,0 +1,303 @@
+{
+  "plugins": [
+    "react",
+    "import"
+  ],
+  "rules": {
+    "react/forbid-elements": [
+      "warn",
+      {
+        "forbid": []
+      }
+    ],
+    "no-restricted-imports": [
+      "warn",
+      {
+        "patterns": [
+          {
+            "group": [
+              "components/core/**",
+              "components/layout/**",
+              "components/stars/**",
+              "ui_kits/star-board/**"
+            ],
+            "message": "Import design-system components from 'index.js', not component internals."
+          }
+        ]
+      }
+    ],
+    "no-restricted-syntax": [
+      "warn",
+      {
+        "selector": "Literal[value=/#[0-9a-fA-F]{3,8}\\b/]",
+        "message": "Raw hex color — use a design-system color token via var()."
+      },
+      {
+        "selector": "Literal[value=/\\b\\d+px\\b/]",
+        "message": "Raw px value — use a design-system spacing token via var()."
+      },
+      {
+        "selector": "Literal[value=/font-family\\s*:\\s*(?!['\\\"]?(?:Fredoka|Nunito))/i]",
+        "message": "Font not provided by the design system. Available: Fredoka, Nunito."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='AppHeader'] > JSXAttribute > JSXIdentifier[name!=/^(?:title|action|key|ref|className|style|children)$/]",
+        "message": "<AppHeader> doesn't accept that prop. Declared props: title, action."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Avatar'] > JSXAttribute > JSXIdentifier[name!=/^(?:emoji|src|size|alt|key|ref|className|style|children)$/]",
+        "message": "<Avatar> doesn't accept that prop. Declared props: emoji, src, size, alt."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Badge'] > JSXAttribute > JSXIdentifier[name!=/^(?:tone|soft|children|key|ref|className|style|children)$/]",
+        "message": "<Badge> doesn't accept that prop. Declared props: tone, soft, children."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Badge'] > JSXAttribute[name.name='tone'] > Literal[value!=/^(?:info|reward|action|danger|neutral)$/]",
+        "message": "<Badge> tone must be one of 'info' | 'reward' | 'action' | 'danger' | 'neutral'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='NavItem'] > JSXAttribute > JSXIdentifier[name!=/^(?:id|label|icon|key|ref|className|style|children)$/]",
+        "message": "<NavItem> doesn't accept that prop. Declared props: id, label, icon."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Button'] > JSXAttribute > JSXIdentifier[name!=/^(?:variant|size|block|disabled|iconLeft|children|key|ref|className|style|children)$/]",
+        "message": "<Button> doesn't accept that prop. Declared props: variant, size, block, disabled, iconLeft, children."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Button'] > JSXAttribute[name.name='variant'] > Literal[value!=/^(?:primary|reward|secondary|ghost|danger)$/]",
+        "message": "<Button> variant must be one of 'primary' | 'reward' | 'secondary' | 'ghost' | 'danger'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Button'] > JSXAttribute[name.name='size'] > Literal[value!=/^(?:sm|md|lg)$/]",
+        "message": "<Button> size must be one of 'sm' | 'md' | 'lg'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Card'] > JSXAttribute > JSXIdentifier[name!=/^(?:inset|selected|selectColor|padding|children|key|ref|className|style|children)$/]",
+        "message": "<Card> doesn't accept that prop. Declared props: inset, selected, selectColor, padding, children."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='FillingBoard'] > JSXAttribute > JSXIdentifier[name!=/^(?:balance|cost|slotSize|key|ref|className|style|children)$/]",
+        "message": "<FillingBoard> doesn't accept that prop. Declared props: balance, cost, slotSize."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='GoalReward'] > JSXAttribute > JSXIdentifier[name!=/^(?:label|cost|emoji|src|key|ref|className|style|children)$/]",
+        "message": "<GoalReward> doesn't accept that prop. Declared props: label, cost, emoji, src."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='ListRow'] > JSXAttribute > JSXIdentifier[name!=/^(?:leading|title|meta|trailing|selected|selectColor|dim|key|ref|className|style|children)$/]",
+        "message": "<ListRow> doesn't accept that prop. Declared props: leading, title, meta, trailing, selected, selectColor, dim."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Sheet'] > JSXAttribute > JSXIdentifier[name!=/^(?:children|onClose|anchor|maxWidth|zIndex|key|ref|className|style|children)$/]",
+        "message": "<Sheet> doesn't accept that prop. Declared props: children, onClose, anchor, maxWidth, zIndex."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Sheet'] > JSXAttribute[name.name='anchor'] > Literal[value!=/^(?:bottom|center)$/]",
+        "message": "<Sheet> anchor must be one of 'bottom' | 'center'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='StarPips'] > JSXAttribute > JSXIdentifier[name!=/^(?:max|filled|size|key|ref|className|style|children)$/]",
+        "message": "<StarPips> doesn't accept that prop. Declared props: max, filled, size."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='StarRating'] > JSXAttribute > JSXIdentifier[name!=/^(?:max|value|onChange|prompt|key|ref|className|style|children)$/]",
+        "message": "<StarRating> doesn't accept that prop. Declared props: max, value, onChange, prompt."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Task'] > JSXAttribute > JSXIdentifier[name!=/^(?:label|maxStars|mode|emoji|src|key|ref|className|style|children)$/]",
+        "message": "<Task> doesn't accept that prop. Declared props: label, maxStars, mode, emoji, src."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Task'] > JSXAttribute[name.name='mode'] > Literal[value!=/^(?:skill|firstTry)$/]",
+        "message": "<Task> mode must be one of 'skill' | 'firstTry'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Toggle'] > JSXAttribute > JSXIdentifier[name!=/^(?:checked|onChange|label|disabled|key|ref|className|style|children)$/]",
+        "message": "<Toggle> doesn't accept that prop. Declared props: checked, onChange, label, disabled."
+      }
+    ]
+  },
+  "overrides": [
+    {
+      "files": [
+        "**/index.js"
+      ],
+      "rules": {
+        "no-restricted-imports": "off"
+      }
+    }
+  ],
+  "x-omelette": {
+    "components": {
+      "AppHeader": {
+        "replaces": []
+      },
+      "Avatar": {
+        "replaces": []
+      },
+      "Badge": {
+        "replaces": []
+      },
+      "NavItem": {
+        "replaces": []
+      },
+      "Button": {
+        "replaces": []
+      },
+      "Card": {
+        "replaces": []
+      },
+      "FillingBoard": {
+        "replaces": []
+      },
+      "GoalReward": {
+        "replaces": []
+      },
+      "ListRow": {
+        "replaces": []
+      },
+      "Sheet": {
+        "replaces": []
+      },
+      "StarPips": {
+        "replaces": []
+      },
+      "StarRating": {
+        "replaces": []
+      },
+      "Task": {
+        "replaces": []
+      },
+      "Toggle": {
+        "replaces": []
+      }
+    },
+    "tokens": [
+      "--action",
+      "--action-press",
+      "--anim-dur",
+      "--anim-ease",
+      "--anim-ease-settle",
+      "--bg",
+      "--border-hairline",
+      "--coral",
+      "--danger",
+      "--font-body",
+      "--font-display",
+      "--gold",
+      "--gold-deep",
+      "--info",
+      "--ink",
+      "--ink-soft",
+      "--leading-normal",
+      "--leading-tight",
+      "--line",
+      "--overlay-scrim",
+      "--plum",
+      "--radius",
+      "--radius-lg",
+      "--radius-pill",
+      "--reward",
+      "--reward-press",
+      "--shadow",
+      "--space-1",
+      "--space-2",
+      "--space-3",
+      "--space-4",
+      "--space-5",
+      "--space-6",
+      "--space-8",
+      "--surface",
+      "--surface-2",
+      "--surface-app",
+      "--surface-card",
+      "--surface-inset",
+      "--tap-min",
+      "--teal",
+      "--teal-deep",
+      "--text-2xl",
+      "--text-2xs",
+      "--text-3xl",
+      "--text-4xl",
+      "--text-base",
+      "--text-lg",
+      "--text-md",
+      "--text-muted",
+      "--text-sm",
+      "--text-strong",
+      "--text-xl",
+      "--text-xs",
+      "--tracking-label",
+      "--weight-bold",
+      "--weight-heavy",
+      "--weight-medium",
+      "--weight-regular"
+    ],
+    "tokenKinds": {
+      "--bg": "color",
+      "--surface": "color",
+      "--surface-2": "color",
+      "--ink": "color",
+      "--ink-soft": "color",
+      "--line": "color",
+      "--teal": "color",
+      "--teal-deep": "color",
+      "--gold": "color",
+      "--gold-deep": "color",
+      "--coral": "color",
+      "--plum": "color",
+      "--text-strong": "font",
+      "--text-muted": "font",
+      "--surface-app": "color",
+      "--surface-card": "color",
+      "--surface-inset": "color",
+      "--border-hairline": "color",
+      "--action": "color",
+      "--action-press": "color",
+      "--reward": "color",
+      "--reward-press": "color",
+      "--danger": "color",
+      "--info": "color",
+      "--overlay-scrim": "color",
+      "--font-display": "font",
+      "--font-body": "font",
+      "--weight-regular": "font",
+      "--weight-medium": "font",
+      "--weight-bold": "font",
+      "--weight-heavy": "font",
+      "--text-2xs": "font",
+      "--text-xs": "font",
+      "--text-sm": "font",
+      "--text-base": "font",
+      "--text-md": "font",
+      "--text-lg": "font",
+      "--text-xl": "font",
+      "--text-2xl": "font",
+      "--text-3xl": "font",
+      "--text-4xl": "font",
+      "--leading-tight": "font",
+      "--leading-normal": "font",
+      "--tracking-label": "font",
+      "--space-1": "spacing",
+      "--space-2": "spacing",
+      "--space-3": "spacing",
+      "--space-4": "spacing",
+      "--space-5": "spacing",
+      "--space-6": "spacing",
+      "--space-8": "spacing",
+      "--radius": "radius",
+      "--radius-lg": "radius",
+      "--radius-pill": "radius",
+      "--shadow": "shadow",
+      "--tap-min": "spacing",
+      "--anim-dur": "other",
+      "--anim-ease": "other",
+      "--anim-ease-settle": "other"
+    },
+    "fontFamilies": [
+      "Fredoka",
+      "Nunito"
+    ]
+  }
+}

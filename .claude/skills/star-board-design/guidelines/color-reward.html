@@ -1,0 +1,28 @@
+<!-- @dsCard group="Colors" viewport="700x150" name="Reward & Accent" subtitle="Gold = stars/rewards only · coral = destructive · plum = info" -->
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8" />
+<link rel="stylesheet" href="../styles.css" />
+<style>
+  body { background: var(--surface); font-family: var(--font-body); padding: 18px; }
+  .row { display: flex; gap: 14px; }
+  .sw { flex: 1; border-radius: var(--radius); padding: 14px; display: flex; flex-direction: column; gap: 4px; min-height: 96px; justify-content: flex-end; box-shadow: var(--shadow); }
+  .name { font-weight: 800; font-size: 14px; }
+  .hex { font-size: 12px; opacity: .85; }
+  .vartxt { font-size: 11px; opacity: .8; }
+</style></head>
+<body>
+  <div class="row">
+    <div class="sw" style="background:var(--gold);color:#fff">
+      <span class="name">Gold ★</span><span class="hex">#F2B632</span><span class="vartxt">--gold · --reward</span>
+    </div>
+    <div class="sw" style="background:var(--gold-deep);color:#fff">
+      <span class="name">Gold deep</span><span class="hex">#D99A14</span><span class="vartxt">--gold-deep</span>
+    </div>
+    <div class="sw" style="background:var(--coral);color:#fff">
+      <span class="name">Coral</span><span class="hex">#F47B5A</span><span class="vartxt">--coral · --danger</span>
+    </div>
+    <div class="sw" style="background:var(--plum);color:#fff">
+      <span class="name">Plum</span><span class="hex">#8C7AB0</span><span class="vartxt">--plum · --info</span>
+    </div>
+  </div>
+</body></html>

@@ -1,0 +1,18 @@
+<!-- @dsCard group="Spacing" viewport="700x150" name="Tap Target — 56px" subtitle="Every interactive element is ≥ 56px; accessibility floor" -->
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8" />
+<link rel="stylesheet" href="../styles.css" />
+<style>
+  body { background: var(--surface); padding: 20px; font-family: var(--font-body); }
+  .wrap { display: flex; align-items: center; gap: 18px; }
+  .target { min-width: var(--tap-min); min-height: var(--tap-min); border-radius: var(--radius); background: var(--teal); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 20px; }
+  .note { font-size: 13px; color: var(--ink-soft); max-width: 360px; line-height: 1.5; }
+  .b { color: var(--ink); font-weight: 800; }
+</style></head>
+<body>
+  <div class="wrap">
+    <div class="target">⚙️</div>
+    <div class="target" style="padding:0 24px">Give 3 ★</div>
+    <p class="note"><span class="b">--tap-min: 56px.</span> Buttons, toggles, star picks and nav items never go below this. Designed for young, developing, or low-dexterity motor control.</p>
+  </div>
+</body></html>
