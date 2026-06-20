@@ -56,7 +56,7 @@ export default function TaskCard({ task, onChange }) {
   return (
     <div className={`${styles.card} ${selected > 0 ? styles.selectedCard : ''}`}>
       {celebrate > 0 && <CalmCelebration stars={celebrate} onDone={celebrationDone} />}
-      {showPuzzle && <MiniPuzzle onDone={puzzleDone} onCancel={() => setShowPuzzle(false)} />}
+      {showPuzzle && <MiniPuzzle onDone={puzzleDone} onCancel={() => setShowPuzzle(false)} label="Answer to unlock 🔓" />}
 
       <div className={styles.header}>
         <ImageDisplay imageId={task.imageId} emoji={task.emoji} size={72} alt={task.label} />
