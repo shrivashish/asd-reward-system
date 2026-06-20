@@ -1,0 +1,12 @@
+{
+  "name": "Star Board",
+  "short_name": "Star Board",
+  "theme_color": "#243334",
+  "background_color": "#243334",
+  "display": "standalone",
+  "icons": [
+    { "src": "/assets/app-icon/web/pwa-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/assets/app-icon/web/pwa-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/assets/app-icon/web/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
