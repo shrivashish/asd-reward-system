@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useRef, useEffect } from 'react';
 import { useApp } from '../state/AppContext';
 import styles from './MiniPuzzle.module.css';
 
@@ -136,22 +136,38 @@ function generatePuzzle(types) {
 
 export default function MiniPuzzle({ onDone }) {
   const { settings } = useApp();
-  const [answered, setAnswered] = useState(null); // null | 'correct' | 'wrong'
+  const [answered, setAnswered] = useState(null); // null | 'correct' | 'wrong'  — for visuals only
   const puzzle = useMemo(() => generatePuzzle(settings.puzzleTypes), [settings.puzzleTypes]);
 
+  // Synchronous ref guard — unlike state, this updates instantly with no render-cycle gap,
+  // so rapid taps (wrong then correct before React re-renders) cannot slip through.
+  const lockedRef = useRef(false);
+  const timerRef = useRef(null);
+
+  useEffect(() => {
+    return () => { if (timerRef.current) clearTimeout(timerRef.current); };
+  }, []);
+
   function handleChoice(isAnswer) {
-    if (answered) return;
+    if (lockedRef.current) return; // synchronous, no stale-closure bypass possible
+    lockedRef.current = true;
+    if (timerRef.current) clearTimeout(timerRef.current);
+
     if (isAnswer) {
       setAnswered('correct');
-      setTimeout(onDone, 1100);
+      timerRef.current = setTimeout(onDone, 1100);
+      // lockedRef stays true — puzzle is leaving, no retry needed
     } else {
       setAnswered('wrong');
-      setTimeout(() => setAnswered(null), 1000); // brief feedback, then retry
+      timerRef.current = setTimeout(() => {
+        setAnswered(null);
+        lockedRef.current = false; // unlock only after wrong-answer feedback clears
+      }, 1000);
     }
   }
 
   return (
-    <div className={styles.overlay} role="dialog" aria-modal="true" aria-label="Unlock check">
+    <div className={styles.overlay} role="dialog" aria-modal="true" aria-label="Unlock check" onClick={e => e.stopPropagation()}>
       <div className={`${styles.card} ${settings.calmMode ? styles.calm : ''}`}>
         <p className={styles.gate}>Answer to unlock 🔓</p>
         <p className={styles.question}>{puzzle.question}</p>
