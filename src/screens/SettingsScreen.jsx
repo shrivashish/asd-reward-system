@@ -1,6 +1,7 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { useApp } from '../state/AppContext';
 import { exportBundle, importBundle } from '../data/exportImport';
+import ConfirmCorrection from '../components/ConfirmCorrection';
 import styles from './SettingsScreen.module.css';
 
 const TOGGLES = [
@@ -13,8 +14,9 @@ const TOGGLES = [
 ];
 
 export default function SettingsScreen() {
-  const { settings, updateSettings } = useApp();
+  const { settings, updateSettings, currentChildId, refresh } = useApp();
   const importRef = useRef();
+  const [correcting, setCorrecting] = useState(false);
 
   const toggle = key => updateSettings({ [key]: !settings[key] });
 
@@ -62,6 +64,29 @@ export default function SettingsScreen() {
         </button>
         <input ref={importRef} type="file" accept=".json" style={{ display: 'none' }} onChange={handleImport} />
       </div>
+
+      <div className={styles.section}>
+        <h2 className={styles.sectionTitle}>Corrections</h2>
+        <p className={styles.sectionNote}>
+          Stars earned are permanent. The only downward move is fixing an accidental
+          tap — logged as a correction, never as a punishment.
+        </p>
+        <button
+          className={styles.dataBtn}
+          onClick={() => setCorrecting(true)}
+          disabled={!currentChildId}
+        >
+          ✎ Correct a mis-tap
+        </button>
+      </div>
+
+      {correcting && (
+        <ConfirmCorrection
+          childId={currentChildId}
+          onDone={() => { setCorrecting(false); refresh(); alert('Correction logged.'); }}
+          onCancel={() => setCorrecting(false)}
+        />
+      )}
     </div>
   );
 }

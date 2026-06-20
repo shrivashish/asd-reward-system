@@ -13,6 +13,7 @@ export default function ConfirmCorrection({ childId, onDone, onCancel }) {
   }
 
   return (
+    <div className={styles.overlay}>
     <div className={styles.wrap} role="dialog" aria-modal="true">
       <h2 className={styles.title}>Correct a mis-tap</h2>
       <p className={styles.desc}>
@@ -44,6 +45,7 @@ export default function ConfirmCorrection({ childId, onDone, onCancel }) {
           Apply Correction
         </button>
       </div>
+    </div>
     </div>
   );
 }

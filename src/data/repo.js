@@ -54,6 +54,57 @@ export async function archiveTask(taskId) {
   if (task) await db.put('tasks', { ...task, active: false });
 }
 
+// ── Fade (P5) ─────────────────────────────────────────────────────────────
+// Surfaces skill tasks the child is doing reliably, so the parent is prompted
+// to start tapering (§11). A habit looks self-sustaining when the task earned
+// on most days across its taper window and there is still room to fade.
+export async function getFadeSuggestions(childId) {
+  const db = await getDB();
+  const tasks = (await db.getAllFromIndex('tasks', 'by_child', childId))
+    .filter(t => t.active && t.mode === 'skill');
+  const earns = (await db.getAllFromIndex('ledger', 'by_child', childId))
+    .filter(e => e.type === 'earn');
+
+  const now = Date.now();
+  const suggestions = [];
+  for (const t of tasks) {
+    const fp = t.fadePlan || {};
+    const window = fp.taperEvery > 0 ? fp.taperEvery : 14;
+    const target = fp.targetStars ?? 0;
+    if (t.maxStars <= target) continue; // already faded to its target
+
+    const since = now - window * 24 * 60 * 60 * 1000;
+    const days = new Set(
+      earns
+        .filter(e => e.taskId === t.id && e.ts >= since)
+        .map(e => new Date(e.ts).toDateString())
+    );
+    const threshold = Math.max(3, Math.ceil(window * 0.7));
+    if (days.size >= threshold) {
+      suggestions.push({
+        taskId: t.id,
+        label: t.label,
+        days: days.size,
+        window,
+        currentMax: t.maxStars,
+        nextMax: Math.max(target, t.maxStars - 1),
+      });
+    }
+  }
+  return suggestions;
+}
+
+// Take one taper step: lower maxStars by one toward the fade target. This is a
+// config change, never a ledger change — earned stars are permanent (P4).
+export async function applyFadeStep(taskId) {
+  const db = await getDB();
+  const task = await db.get('tasks', taskId);
+  if (!task) return;
+  const target = task.fadePlan?.targetStars ?? 0;
+  const nextMax = Math.max(target, task.maxStars - 1);
+  await db.put('tasks', { ...task, maxStars: nextMax });
+}
+
 // ── Rewards ─────────────────────────────────────────────────────────────
 export async function listRewards(childId) {
   const db = await getDB();
