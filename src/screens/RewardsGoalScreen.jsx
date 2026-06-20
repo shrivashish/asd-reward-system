@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { listRewards, upsertReward, getGoal, setGoal } from '../data/repo';
+import { listRewards, upsertReward } from '../data/repo';
 import { useApp } from '../state/AppContext';
 import ImagePicker from '../components/ImagePicker';
 import ImageDisplay from '../components/ImageDisplay';
@@ -10,14 +10,12 @@ const BLANK_REWARD = { label: '', emoji: '🎁', imageId: null, cost: 10, active
 export default function RewardsGoalScreen() {
   const { currentChildId, refresh } = useApp();
   const [rewards, setRewards] = useState([]);
-  const [goal, setGoalState] = useState(null);
   const [editing, setEditing] = useState(null);
 
   async function load() {
     if (!currentChildId) return;
-    const [r, g] = await Promise.all([listRewards(currentChildId), getGoal(currentChildId)]);
-    setRewards(r);
-    setGoalState(g);
+    const r = await listRewards(currentChildId);
+    setRewards([...r].sort((a, b) => a.cost - b.cost));
   }
 
   useEffect(() => { load(); }, [currentChildId]);
@@ -30,15 +28,13 @@ export default function RewardsGoalScreen() {
     refresh();
   }
 
-  async function pickGoal(rewardId) {
-    await setGoal(currentChildId, rewardId);
-    setGoalState({ childId: currentChildId, rewardId });
-    refresh();
-  }
-
   return (
     <div className={styles.wrap}>
-      <h1 className={styles.h1}>Rewards & goal</h1>
+      <h1 className={styles.h1}>Reward ladder</h1>
+      <p className={styles.intro}>
+        Each reward has a star cost. The child sees them all in order, from
+        easiest to reach to biggest, and can claim one once they have enough stars.
+      </p>
 
       {!editing && (
         <button className={styles.addBtn} onClick={() => setEditing({ ...BLANK_REWARD })}>
@@ -72,7 +68,7 @@ export default function RewardsGoalScreen() {
           <label className={styles.field}>
             Star cost: {editing.cost}
             <input
-              type="range" min={1} max={50} value={editing.cost}
+              type="range" min={1} max={100} value={editing.cost}
               onChange={e => setEditing(p => ({ ...p, cost: Number(e.target.value) }))}
             />
           </label>
@@ -89,18 +85,14 @@ export default function RewardsGoalScreen() {
           <p className={styles.empty}>No rewards yet — add one above.</p>
         )}
         {rewards.map(r => (
-          <div key={r.id} className={`${styles.row} ${goal?.rewardId === r.id ? styles.current : ''}`}>
+          <div key={r.id} className={styles.row}>
             <ImageDisplay imageId={r.imageId} emoji={r.emoji} size={48} alt={r.label} />
             <div className={styles.rowInfo}>
               <span className={styles.rowLabel}>{r.label}</span>
               <span className={styles.rowMeta}>{r.cost} ★</span>
-              {goal?.rewardId === r.id && <span className={styles.currentTag}>Current goal</span>}
             </div>
             <div className={styles.rowActions}>
               <button className={styles.editBtn} onClick={() => setEditing({ ...r })}>Edit</button>
-              {goal?.rewardId !== r.id && (
-                <button className={styles.goalBtn} onClick={() => pickGoal(r.id)}>Set goal</button>
-              )}
             </div>
           </div>
         ))}

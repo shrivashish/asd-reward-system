@@ -1,4 +1,4 @@
-import { upsertChild, upsertTask, upsertReward, setGoal, listChildren } from './repo';
+import { upsertChild, upsertTask, upsertReward, listChildren } from './repo';
 
 export async function seedIfEmpty() {
   const children = await listChildren();
@@ -45,14 +45,15 @@ export async function seedIfEmpty() {
     fadePlan: { taperEvery: 0, targetStars: 0, note: 'Remove once comfortable' },
   });
 
-  const reward = await upsertReward({
-    childId: child.id,
-    label: 'Choose a movie',
-    imageId: null,
-    emoji: '🎬',
-    cost: 10,
-    active: true,
-  });
-
-  await setGoal(child.id, reward.id);
+  // A reward ladder, easiest to biggest. The child sees them all in order and
+  // can claim one once they have saved enough stars for it.
+  const ladder = [
+    { label: 'Choose a movie', emoji: '🎬', cost: 10 },
+    { label: 'Ice cream', emoji: '🍦', cost: 20 },
+    { label: 'Chocolate', emoji: '🍫', cost: 30 },
+    { label: 'Birthday cake', emoji: '🎂', cost: 50 },
+  ];
+  for (const r of ladder) {
+    await upsertReward({ childId: child.id, imageId: null, active: true, ...r });
+  }
 }

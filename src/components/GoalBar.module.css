@@ -5,19 +5,58 @@
   box-shadow: var(--shadow);
   margin-bottom: 4px;
 }
-.bar.ready { border: 2px solid var(--gold); }
+.header {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.headerLabel { font-size: 15px; color: var(--ink-soft); }
+.headerStars { font-family: var(--font-display); font-size: 28px; color: var(--teal); }
+
+.ladder {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.rung {
+  background: var(--surface-2);
+  border: 2px solid var(--line);
+  border-radius: var(--radius);
+  padding: 12px;
+  transition: border-color var(--anim-dur), background var(--anim-dur), opacity var(--anim-dur);
+}
+.rung.next { border-color: var(--teal); background: var(--surface); }
+.rung.ready { border-color: var(--gold); background: var(--surface); }
+
 .top {
   display: flex;
   align-items: center;
   gap: 16px;
-  margin-bottom: 12px;
 }
 .goalImage { flex-shrink: 0; }
-.goalInfo { display: flex; flex-direction: column; gap: 4px; }
+.goalInfo { display: flex; flex-direction: column; gap: 4px; flex: 1; min-width: 0; }
 .goalLabel { font-family: var(--font-display); font-size: 20px; color: var(--ink); }
-.balance { font-size: 15px; color: var(--ink-soft); }
-.balanceNum { font-size: 22px; font-weight: 700; color: var(--teal); }
-.balanceSep, .balanceCost { color: var(--ink-soft); }
+.cost { font-size: 15px; color: var(--ink-soft); }
+
+.remaining {
+  flex-shrink: 0;
+  font-size: 14px;
+  color: var(--ink-soft);
+  white-space: nowrap;
+}
+.badge {
+  flex-shrink: 0;
+  font-family: var(--font-display);
+  font-size: 15px;
+  color: white;
+  background: var(--gold);
+  border-radius: var(--radius);
+  padding: 4px 10px;
+  white-space: nowrap;
+}
+
 .noGoal {
   text-align: center;
   color: var(--ink-soft);
