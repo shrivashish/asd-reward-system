@@ -106,7 +106,7 @@ function generatePuzzle(types) {
 }
 
 // ── Input section (math types) ────────────────────────────────────────────
-function InputSection({ puzzle, onDone, onCancel }) {
+function InputSection({ puzzle, onDone, onCancel, onRefresh }) {
   const [input, setInput] = useState('');
   const [error, setError] = useState('');
   const [solved, setSolved] = useState(false);
@@ -123,6 +123,7 @@ function InputSection({ puzzle, onDone, onCancel }) {
     } else {
       setError('Not quite — try again');
       setInput('');
+      onRefresh(); // new question on wrong answer
     }
   }
 
@@ -150,7 +151,7 @@ function InputSection({ puzzle, onDone, onCancel }) {
 }
 
 // ── Choice section (visual types) ─────────────────────────────────────────
-function ChoiceSection({ puzzle, onDone, onCancel }) {
+function ChoiceSection({ puzzle, onDone, onCancel, onRefresh }) {
   const [answered, setAnswered] = useState(null);
   const lockedRef = useRef(false);
   const timerRef = useRef(null);
@@ -168,6 +169,7 @@ function ChoiceSection({ puzzle, onDone, onCancel }) {
       timerRef.current = setTimeout(() => {
         setAnswered(null);
         lockedRef.current = false;
+        onRefresh(); // new question on wrong answer
       }, 1000);
     }
   }
@@ -204,7 +206,9 @@ function ChoiceSection({ puzzle, onDone, onCancel }) {
 // ── Main export (used by both ParentGate and TaskCard) ────────────────────
 export default function MiniPuzzle({ onDone, onCancel, label = 'Answer to unlock 🔓' }) {
   const { settings } = useApp();
-  const puzzle = useMemo(() => generatePuzzle(settings.puzzleTypes), [settings.puzzleTypes]);
+  const [puzzleKey, setPuzzleKey] = useState(0);
+  const puzzle = useMemo(() => generatePuzzle(settings.puzzleTypes), [settings.puzzleTypes, puzzleKey]);
+  function refreshPuzzle() { setPuzzleKey(k => k + 1); }
 
   return (
     <div
@@ -221,8 +225,8 @@ export default function MiniPuzzle({ onDone, onCancel, label = 'Answer to unlock
           <div className={styles.prompt} aria-hidden="true">{puzzle.prompt}</div>
         )}
         {puzzle.mode === 'input'
-          ? <InputSection puzzle={puzzle} onDone={onDone} onCancel={onCancel} />
-          : <ChoiceSection puzzle={puzzle} onDone={onDone} onCancel={onCancel} />
+          ? <InputSection puzzle={puzzle} onDone={onDone} onCancel={onCancel} onRefresh={refreshPuzzle} />
+          : <ChoiceSection puzzle={puzzle} onDone={onDone} onCancel={onCancel} onRefresh={refreshPuzzle} />
         }
       </div>
     </div>
