@@ -20,7 +20,6 @@ const GROUPS = [
   {
     title: 'Access & safety',
     toggles: [
-      { key: 'parentGate', icon: '🔒', label: 'Parent gate', desc: 'Ask a question before opening the parent area' },
       { key: 'capabilityCheck', icon: '✅', label: 'Capability check', desc: 'Check in before skill-mode awards (P1)' },
     ],
   },
@@ -42,6 +41,12 @@ export default function SettingsScreen() {
   const [correcting, setCorrecting] = useState(false);
 
   const toggle = key => updateSettings({ [key]: !settings[key] });
+
+  const puzzleGateOn = settings.parentGate;
+  function togglePuzzleGate() {
+    const next = !puzzleGateOn;
+    updateSettings({ parentGate: next, puzzleOnTaskDone: next });
+  }
 
   function togglePuzzleType(value) {
     const current = settings.puzzleTypes || [];
@@ -104,25 +109,25 @@ export default function SettingsScreen() {
       ))}
 
       <div className={styles.section}>
-        <h2 className={styles.sectionTitle}>Puzzles</h2>
+        <h2 className={styles.sectionTitle}>Puzzle gate</h2>
         <div className={styles.row}>
           <span className={styles.rowIcon} aria-hidden="true">🧩</span>
           <div className={styles.rowInfo}>
             <span className={styles.rowLabel}>Puzzle gate</span>
-            <span className={styles.rowDesc}>Child must answer a puzzle before a task can be marked done</span>
+            <span className={styles.rowDesc}>Ask a puzzle before opening the parent area or marking a task done</span>
           </div>
           <button
             role="switch"
-            aria-checked={settings.puzzleOnTaskDone}
-            className={`${styles.toggle} ${settings.puzzleOnTaskDone ? styles.on : ''}`}
-            onClick={() => toggle('puzzleOnTaskDone')}
-            aria-label="Puzzle on done"
+            aria-checked={puzzleGateOn}
+            className={`${styles.toggle} ${puzzleGateOn ? styles.on : ''}`}
+            onClick={togglePuzzleGate}
+            aria-label="Puzzle gate"
           >
             <span className={styles.thumb} />
           </button>
         </div>
 
-        {settings.puzzleOnTaskDone && (
+        {puzzleGateOn && (
           <>
             <p className={styles.sectionNote}>Pick which puzzle types appear as the gate — at least one must stay on.</p>
             <div className={styles.chipGrid}>
