@@ -108,8 +108,8 @@ export default function SettingsScreen() {
         <div className={styles.row}>
           <span className={styles.rowIcon} aria-hidden="true">🧩</span>
           <div className={styles.rowInfo}>
-            <span className={styles.rowLabel}>Puzzle on done</span>
-            <span className={styles.rowDesc}>Show a quick puzzle each time a task is completed</span>
+            <span className={styles.rowLabel}>Puzzle gate</span>
+            <span className={styles.rowDesc}>Child must answer a puzzle before a task can be marked done</span>
           </div>
           <button
             role="switch"
@@ -124,7 +124,7 @@ export default function SettingsScreen() {
 
         {settings.puzzleOnTaskDone && (
           <>
-            <p className={styles.sectionNote}>Choose which puzzle types to include — at least one must stay on.</p>
+            <p className={styles.sectionNote}>Pick which puzzle types appear as the gate — at least one must stay on.</p>
             <div className={styles.chipGrid}>
               {PUZZLE_TYPES.map(t => {
                 const on = (settings.puzzleTypes || []).includes(t.value);

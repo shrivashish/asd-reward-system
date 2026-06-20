@@ -151,8 +151,9 @@ export default function MiniPuzzle({ onDone }) {
   }
 
   return (
-    <div className={styles.overlay} role="dialog" aria-modal="true" aria-label="Mini puzzle">
+    <div className={styles.overlay} role="dialog" aria-modal="true" aria-label="Unlock check">
       <div className={`${styles.card} ${settings.calmMode ? styles.calm : ''}`}>
+        <p className={styles.gate}>Answer to unlock 🔓</p>
         <p className={styles.question}>{puzzle.question}</p>
         {puzzle.prompt && (
           <div className={styles.prompt} aria-hidden="true">{puzzle.prompt}</div>

@@ -22,11 +22,11 @@ export default function TaskCard({ task, onChange }) {
   }
 
   async function done() {
-    if (selected > 0) {
+    if (settings.puzzleOnTaskDone) {
+      setShowPuzzle(true); // puzzle gates entry — nothing earned yet
+    } else if (selected > 0) {
       await addEarn(task.childId, task.id, selected);
-      setCelebrate(selected); // show the "Good job" popup, then finish
-    } else if (settings.puzzleOnTaskDone) {
-      setShowPuzzle(true);
+      setCelebrate(selected);
     } else {
       await finish();
     }
@@ -39,16 +39,18 @@ export default function TaskCard({ task, onChange }) {
 
   function celebrationDone() {
     setCelebrate(0);
-    if (settings.puzzleOnTaskDone) {
-      setShowPuzzle(true);
-    } else {
-      finish();
-    }
+    finish();
   }
 
-  function puzzleDone() {
+  async function puzzleDone() {
     setShowPuzzle(false);
-    finish();
+    // Puzzle passed — now proceed with normal completion
+    if (selected > 0) {
+      await addEarn(task.childId, task.id, selected);
+      setCelebrate(selected);
+    } else {
+      await finish();
+    }
   }
 
   return (
