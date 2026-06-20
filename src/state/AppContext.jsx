@@ -8,7 +8,10 @@ export function AppProvider({ children }) {
   const [currentChildId, setCurrentChildId] = useState(null);
   const [childList, setChildList] = useState([]);
   const [settings, setSettingsState] = useState({
-    calmMode: false, sound: false, tts: false, highContrast: false, parentGate: true, capabilityCheck: true,
+    calmMode: false, sound: false, tts: false, highContrast: false,
+    parentGate: true, capabilityCheck: true,
+    puzzleOnTaskDone: true,
+    puzzleTypes: ['shapeMatch', 'colorMatch', 'counting', 'emojiPair', 'addition', 'subtraction', 'multiplication'],
   });
   const [view, setView] = useState('board'); // 'board' | 'tasks' | 'rewards' | 'child' | 'settings' | 'guide'
   const [parentUnlocked, setParentUnlocked] = useState(false);
@@ -20,7 +23,7 @@ export function AppProvider({ children }) {
       await seedIfEmpty();
       const [kids, s] = await Promise.all([listChildren(), getSettings()]);
       setChildList(kids);
-      setSettingsState(s);
+      setSettingsState(prev => ({ ...prev, ...s }));
       if (kids.length > 0) setCurrentChildId(kids[0].id);
       setLoading(false);
     }

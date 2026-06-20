@@ -270,5 +270,10 @@ export async function setSettings(patch) {
 }
 
 function defaultSettings() {
-  return { calmMode: false, sound: false, tts: false, highContrast: false, parentGate: true, capabilityCheck: true };
+  return {
+    calmMode: false, sound: false, tts: false, highContrast: false,
+    parentGate: true, capabilityCheck: true,
+    puzzleOnTaskDone: true,
+    puzzleTypes: ['shapeMatch', 'colorMatch', 'counting', 'emojiPair', 'addition', 'subtraction', 'multiplication'],
+  };
 }

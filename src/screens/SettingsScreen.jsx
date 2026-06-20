@@ -20,10 +20,19 @@ const GROUPS = [
   {
     title: 'Access & safety',
     toggles: [
-      { key: 'parentGate', icon: '🔒', label: 'Parent gate', desc: 'Ask a question before opening the parent area' },
       { key: 'capabilityCheck', icon: '✅', label: 'Capability check', desc: 'Check in before skill-mode awards (P1)' },
     ],
   },
+];
+
+const PUZZLE_TYPES = [
+  { value: 'shapeMatch',     icon: '🔺', label: 'Shapes'    },
+  { value: 'colorMatch',     icon: '🎨', label: 'Colors'    },
+  { value: 'counting',       icon: '⭐', label: 'Counting'  },
+  { value: 'emojiPair',      icon: '🐱', label: 'Emoji'     },
+  { value: 'addition',       icon: '➕', label: 'Addition'  },
+  { value: 'subtraction',    icon: '➖', label: 'Subtract'  },
+  { value: 'multiplication', icon: '✖️', label: 'Multiply'  },
 ];
 
 export default function SettingsScreen() {
@@ -32,6 +41,19 @@ export default function SettingsScreen() {
   const [correcting, setCorrecting] = useState(false);
 
   const toggle = key => updateSettings({ [key]: !settings[key] });
+
+  const puzzleGateOn = settings.parentGate;
+  function togglePuzzleGate() {
+    const next = !puzzleGateOn;
+    updateSettings({ parentGate: next, puzzleOnTaskDone: next });
+  }
+
+  function togglePuzzleType(value) {
+    const current = settings.puzzleTypes || [];
+    const next = current.includes(value) ? current.filter(v => v !== value) : [...current, value];
+    if (next.length === 0) return; // keep at least one selected
+    updateSettings({ puzzleTypes: next });
+  }
 
   async function handleImport(e) {
     const file = e.target.files?.[0];
@@ -85,6 +107,49 @@ export default function SettingsScreen() {
           ))}
         </div>
       ))}
+
+      <div className={styles.section}>
+        <h2 className={styles.sectionTitle}>Puzzle gate</h2>
+        <div className={styles.row}>
+          <span className={styles.rowIcon} aria-hidden="true">🧩</span>
+          <div className={styles.rowInfo}>
+            <span className={styles.rowLabel}>Puzzle gate</span>
+            <span className={styles.rowDesc}>Ask a puzzle before opening the parent area or marking a task done</span>
+          </div>
+          <button
+            role="switch"
+            aria-checked={puzzleGateOn}
+            className={`${styles.toggle} ${puzzleGateOn ? styles.on : ''}`}
+            onClick={togglePuzzleGate}
+            aria-label="Puzzle gate"
+          >
+            <span className={styles.thumb} />
+          </button>
+        </div>
+
+        {puzzleGateOn && (
+          <>
+            <p className={styles.sectionNote}>Pick which puzzle types appear as the gate — at least one must stay on.</p>
+            <div className={styles.chipGrid}>
+              {PUZZLE_TYPES.map(t => {
+                const on = (settings.puzzleTypes || []).includes(t.value);
+                return (
+                  <button
+                    key={t.value}
+                    className={`${styles.chip} ${on ? styles.chipOn : ''}`}
+                    onClick={() => togglePuzzleType(t.value)}
+                    aria-pressed={on}
+                    aria-label={t.label}
+                  >
+                    <span aria-hidden="true">{t.icon}</span>
+                    {t.label}
+                  </button>
+                );
+              })}
+            </div>
+          </>
+        )}
+      </div>
 
       <div className={styles.section}>
         <h2 className={styles.sectionTitle}>Data</h2>
