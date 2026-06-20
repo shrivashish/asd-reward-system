@@ -57,6 +57,7 @@
   transition: background var(--anim-dur), transform var(--anim-dur);
 }
 .star:active { background: var(--gold); color: white; transform: scale(1.05); }
+.star.starFilled { background: var(--gold); color: white; border-color: var(--gold-deep); }
 
 .fullBtn {
   min-height: var(--tap-min);

@@ -30,12 +30,9 @@ export default function TaskCard({ task, onChange }) {
     onChange();
   }
 
-  if (celebrate > 0) {
-    return <CalmCelebration stars={celebrate} onDone={celebrationDone} />;
-  }
-
   return (
     <div className={`${styles.card} ${awarded > 0 ? styles.awardedCard : ''}`}>
+      {celebrate > 0 && <CalmCelebration stars={celebrate} onDone={celebrationDone} />}
       <div className={styles.header}>
         <ImageDisplay imageId={task.imageId} emoji={task.emoji} size={72} alt={task.label} />
         <div className={styles.info}>
@@ -55,9 +52,10 @@ export default function TaskCard({ task, onChange }) {
           {Array.from({ length: task.maxStars }).map((_, i) => (
             <button
               key={i}
-              className={styles.star}
+              className={`${styles.star} ${i < awarded ? styles.starFilled : ''}`}
               onClick={() => give(i + 1)}
               aria-label={`Give ${i + 1} star${i > 0 ? 's' : ''}`}
+              aria-pressed={i < awarded}
             >
               ★
             </button>
