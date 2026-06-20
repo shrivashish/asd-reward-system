@@ -13,8 +13,11 @@
   --plum: #8C7AB0;
   --radius: 18px;
   --radius-lg: 26px;
+  --radius-pill: 99px;
   --shadow: 0 6px 20px rgba(31,58,56,.08);
   --tap-min: 56px;
+  --content-max: 960px;
+  --form-max: 640px;
   --font-display: 'Fredoka', sans-serif;
   --font-body: 'Nunito', sans-serif;
   --anim-dur: 0.2s;

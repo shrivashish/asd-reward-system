@@ -1,4 +1,6 @@
 .wrap { display: flex; flex-direction: column; gap: 12px; }
+/* Settings reads best as one calm column; cap its width on tablets/laptops. */
+.h1, .intro, .section { width: 100%; max-width: var(--form-max); margin-inline: auto; }
 .h1 { font-family: var(--font-display); font-size: 26px; color: var(--ink); }
 .intro { font-size: 14px; color: var(--ink-soft); line-height: 1.5; margin-top: -4px; }
 

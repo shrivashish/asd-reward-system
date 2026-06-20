@@ -34,3 +34,16 @@
 .fadeActions { display: flex; gap: 10px; margin-top: 6px; }
 .fadeStart { min-height: 40px; padding: 6px 14px; border-radius: var(--radius); font-size: 14px; font-weight: 700; background: var(--teal); color: white; }
 .fadeLater { min-height: 40px; padding: 6px 14px; border-radius: var(--radius); font-size: 14px; font-weight: 700; background: var(--surface-2); color: var(--ink-soft); }
+
+/* Tablet & up: keep the form/controls readable and centered, but let the
+   task list flow into a responsive grid. */
+@media (min-width: 700px) {
+  .addBtn, .editor, .fade { max-width: var(--form-max); width: 100%; margin-inline: auto; }
+  .list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 12px;
+    align-items: start;
+  }
+  .rowActions { flex-wrap: wrap; justify-content: flex-end; }
+}

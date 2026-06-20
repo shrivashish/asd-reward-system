@@ -9,7 +9,29 @@
   flex: 1;
   overflow-y: auto;
   padding: 16px;
-  padding-bottom: 80px;
+  padding-bottom: 88px;
+}
+
+/* Center each screen and cap its width so the layout reads well on tablets
+   and laptops while still filling small phones. */
+.main > * {
+  width: 100%;
+  max-width: var(--content-max);
+  margin-inline: auto;
+}
+
+@media (min-width: 700px) {
+  .main {
+    padding: 24px;
+    padding-bottom: 104px;
+  }
+}
+
+@media (min-width: 1000px) {
+  .main {
+    padding: 32px 40px;
+    padding-bottom: 112px;
+  }
 }
 
 .loading {

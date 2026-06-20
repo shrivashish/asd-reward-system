@@ -1,3 +1,14 @@
 .board { display: flex; flex-direction: column; gap: 12px; }
 .taskList { display: flex; flex-direction: column; gap: 12px; }
 .empty { text-align: center; color: var(--ink-soft); padding: 32px 16px; font-size: 16px; line-height: 1.5; }
+
+/* On tablets and larger, lay the tasks out as a grid so the board fills the
+   wider screen instead of one tall column. */
+@media (min-width: 700px) {
+  .taskList {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 16px;
+    align-items: start;
+  }
+}
