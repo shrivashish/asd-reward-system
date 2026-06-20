@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { listRewards } from '../data/repo';
-import FillingBoard from './FillingBoard';
 import ImageDisplay from './ImageDisplay';
 import styles from './GoalBar.module.css';
 
@@ -22,9 +21,12 @@ export default function GoalBar({ childId, balance, refreshKey, onRedeem }) {
     );
   }
 
-  // The "next" reward is the cheapest one the child can't afford yet — that's
-  // the one we show a full star board for, so they can see how close they are.
-  const nextId = rewards.find(r => balance < r.cost)?.id ?? null;
+  // One continuous climb: the rewards are milestones along a single track that
+  // runs from 0 up to the biggest reward. The fill rises with the balance, so
+  // progress flows past each milestone instead of restarting per reward.
+  const maxCost = Math.max(...rewards.map(r => r.cost), 1);
+  const fillPct = Math.min(balance, maxCost) / maxCost * 100;
+  const trackHeight = Math.max(240, rewards.length * 84);
 
   return (
     <div className={styles.bar}>
@@ -33,43 +35,41 @@ export default function GoalBar({ childId, balance, refreshKey, onRedeem }) {
         <span className={styles.headerStars}>{balance} ★</span>
       </div>
 
-      <ul className={styles.ladder} role="list">
+      <div className={styles.track} style={{ height: trackHeight }}>
+        <div className={styles.rail}>
+          <div className={styles.railFill} style={{ height: `${fillPct}%` }} />
+        </div>
+
+        {balance > 0 && balance < maxCost && (
+          <div className={styles.here} style={{ bottom: `${fillPct}%` }} aria-hidden="true" />
+        )}
+
         {rewards.map(reward => {
           const ready = balance >= reward.cost;
           const remaining = reward.cost - balance;
-          const isNext = reward.id === nextId;
+          const pos = Math.min(reward.cost, maxCost) / maxCost * 100;
 
           return (
-            <li
-              key={reward.id}
-              className={`${styles.rung} ${ready ? styles.ready : ''} ${isNext ? styles.next : ''}`}
-            >
-              <div className={styles.top}>
-                <div className={styles.goalImage}>
-                  <ImageDisplay imageId={reward.imageId} emoji={reward.emoji} size={56} alt={reward.label} />
-                </div>
-                <div className={styles.goalInfo}>
-                  <span className={styles.goalLabel}>{reward.label}</span>
+            <div key={reward.id} className={styles.marker} style={{ bottom: `${pos}%` }}>
+              <span className={`${styles.node} ${ready ? styles.nodeReady : ''}`} aria-hidden="true" />
+              <div className={`${styles.card} ${ready ? styles.ready : ''}`}>
+                <ImageDisplay imageId={reward.imageId} emoji={reward.emoji} size={48} alt={reward.label} />
+                <div className={styles.info}>
+                  <span className={styles.label}>{reward.label}</span>
                   <span className={styles.cost}>{reward.cost} ★</span>
                 </div>
                 {ready ? (
-                  <span className={styles.badge}>Ready!</span>
+                  <button className={styles.redeemBtn} onClick={() => onRedeem(reward)}>
+                    🎉 Claim
+                  </button>
                 ) : (
                   <span className={styles.remaining}>{remaining} to go</span>
                 )}
               </div>
-
-              {isNext && <FillingBoard balance={balance} cost={reward.cost} />}
-
-              {ready && (
-                <button className={styles.redeemBtn} onClick={() => onRedeem(reward)}>
-                  🎉 Claim {reward.label}
-                </button>
-              )}
-            </li>
+            </div>
           );
         })}
-      </ul>
+      </div>
     </div>
   );
 }
