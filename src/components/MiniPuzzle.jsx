@@ -134,7 +134,7 @@ function generatePuzzle(types) {
   };
 }
 
-export default function MiniPuzzle({ onDone }) {
+export default function MiniPuzzle({ onDone, onCancel }) {
   const { settings } = useApp();
   const [answered, setAnswered] = useState(null); // null | 'correct' | 'wrong'  — for visuals only
   const puzzle = useMemo(() => generatePuzzle(settings.puzzleTypes), [settings.puzzleTypes]);
@@ -191,6 +191,9 @@ export default function MiniPuzzle({ onDone }) {
           <p className={styles.feedback} aria-live="polite">
             {answered === 'correct' ? '⭐ Yes!' : '👍 Good try!'}
           </p>
+        )}
+        {onCancel && !answered && (
+          <button className={styles.cancel} onClick={onCancel}>Cancel</button>
         )}
       </div>
     </div>

@@ -99,14 +99,14 @@
   text-align: center;
 }
 
-.skip {
+.cancel {
   font-size: 14px;
   color: var(--ink-soft);
   background: none;
-  border: none;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-pill);
   cursor: pointer;
-  padding: 8px 16px;
-  border-radius: var(--radius);
+  padding: 8px 20px;
   min-height: var(--tap-min);
   font-family: var(--font-body);
 }
