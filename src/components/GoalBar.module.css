@@ -5,109 +5,137 @@
   box-shadow: var(--shadow);
   margin-bottom: 4px;
 }
+
 .header {
   display: flex;
-  align-items: baseline;
-  justify-content: center;
-  gap: 8px;
-  margin-bottom: 16px;
-}
-.headerLabel { font-size: 15px; color: var(--ink-soft); }
-.headerStars { font-family: var(--font-display); font-size: 28px; color: var(--teal); }
-
-/* One continuous track. The rail sits on the left; reward milestones are
-   positioned along it by their star cost, so the whole thing reads as a
-   single climb from bottom (start) to top (biggest reward). */
-.track {
-  position: relative;
-  padding-left: 8px;
-}
-.rail {
-  position: absolute;
-  left: 14px;
-  bottom: 0;
-  width: 10px;
-  height: 100%;
-  background: var(--surface-2);
-  border: 1px solid var(--line);
-  border-radius: 99px;
-  overflow: hidden;
-}
-.railFill {
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  background: linear-gradient(to top, var(--gold-deep), var(--gold));
-  border-radius: 99px;
-  transition: height var(--anim-dur);
-}
-.here {
-  position: absolute;
-  left: 8px;
-  width: 22px;
-  height: 0;
-  border-top: 2px dashed var(--teal);
-  transform: translateY(1px);
-}
-
-.marker {
-  position: absolute;
-  left: 0;
-  right: 0;
-  transform: translateY(50%);
-  display: flex;
+  flex-direction: column;
   align-items: center;
+  gap: 2px;
+  margin-bottom: 8px;
 }
-.node {
-  position: absolute;
-  left: 13px;
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  background: var(--surface);
-  border: 3px solid var(--line);
-  box-sizing: border-box;
-}
-.node.nodeReady { background: var(--gold); border-color: var(--gold-deep); }
+.headerStars { font-family: var(--font-display); font-size: 40px; color: var(--teal); line-height: 1; }
+.headerLabel { font-size: 14px; color: var(--ink-soft); }
 
-.card {
-  margin-left: 44px;
-  flex: 1;
+/* A single horizontal row of star slots: star 1 at the left, the biggest
+   reward at the right. Slots fill left-to-right as the balance climbs; reward
+   stars carry their image. Scrolls horizontally when the ladder is long. */
+.column {
   display: flex;
+  flex-direction: row;
   align-items: center;
-  gap: 12px;
+  gap: 6px;
+  overflow-x: auto;
+  padding: 8px 4px;
+}
+
+.star {
+  flex: 0 0 auto;
+  font-size: 24px;
+  color: var(--line);
+  line-height: 1;
+  transition: color var(--anim-dur);
+}
+.star.filled { color: var(--gold); }
+
+.rewardStar {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 6px 8px;
   background: var(--surface-2);
   border: 2px solid var(--line);
   border-radius: var(--radius);
-  padding: 8px 12px;
+  transition: border-color var(--anim-dur), background var(--anim-dur), transform var(--anim-dur);
 }
-.card.ready { border-color: var(--gold); background: var(--surface); }
-.info { flex: 1; display: flex; flex-direction: column; gap: 2px; min-width: 0; }
-.label { font-family: var(--font-display); font-size: 17px; color: var(--ink); line-height: 1.15; }
-.cost { font-size: 13px; color: var(--ink-soft); }
-.remaining {
+.rewardStar:active { transform: scale(0.96); }
+.rewardStar.filled { background: var(--surface); }
+.rewardStar.ready {
+  border-color: var(--gold);
+  background: var(--surface);
+  box-shadow: 0 0 0 3px var(--gold-soft, rgba(242, 182, 50, 0.25));
+}
+.rewardImg {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 2px solid var(--gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
   flex-shrink: 0;
+}
+.rewardMeta { display: flex; flex-direction: column; align-items: center; min-width: 0; }
+.rewardLabel {
+  font-family: var(--font-display);
   font-size: 13px;
-  color: var(--ink-soft);
+  color: var(--ink);
+  line-height: 1.1;
+  max-width: 80px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.rewardCost { font-size: 12px; color: var(--ink-soft); }
+.readyTag {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--gold-deep);
   white-space: nowrap;
 }
-.redeemBtn {
-  flex-shrink: 0;
-  min-height: 40px;
-  padding: 6px 14px;
-  background: var(--gold);
-  color: white;
-  font-family: var(--font-display);
-  font-size: 15px;
-  border-radius: var(--radius);
-  transition: background var(--anim-dur);
-}
-.redeemBtn:active { background: var(--gold-deep); }
 
 .noGoal {
   text-align: center;
   color: var(--ink-soft);
   font-size: 16px;
   padding: 16px;
+}
+
+/* Claim popup */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  z-index: 50;
+}
+.sheet {
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  max-width: 320px;
+  box-shadow: var(--shadow);
+}
+.sheetLabel { font-family: var(--font-display); font-size: 22px; color: var(--ink); text-align: center; }
+.sheetCost { font-size: 15px; color: var(--ink-soft); }
+.sheetMsg { font-size: 15px; color: var(--ink); text-align: center; margin: 4px 0; }
+.claimBtn {
+  width: 100%;
+  min-height: var(--tap-min);
+  background: var(--gold);
+  color: white;
+  font-family: var(--font-display);
+  font-size: 20px;
+  border-radius: var(--radius);
+  transition: background var(--anim-dur);
+}
+.claimBtn:active { background: var(--gold-deep); }
+.closeBtn {
+  width: 100%;
+  min-height: 44px;
+  background: var(--surface-2);
+  color: var(--ink-soft);
+  border-radius: var(--radius);
+  font-weight: 700;
 }

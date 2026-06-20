@@ -1,10 +1,12 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { listRewards } from '../data/repo';
 import ImageDisplay from './ImageDisplay';
 import styles from './GoalBar.module.css';
 
 export default function GoalBar({ childId, balance, refreshKey, onRedeem }) {
   const [rewards, setRewards] = useState([]);
+  const [claim, setClaim] = useState(null);
+  const columnRef = useRef(null);
 
   useEffect(() => {
     if (!childId) return;
@@ -12,6 +14,13 @@ export default function GoalBar({ childId, balance, refreshKey, onRedeem }) {
       setRewards([...list].sort((a, b) => a.cost - b.cost))
     );
   }, [childId, refreshKey]);
+
+  // The row runs left (star 1) to right (the biggest reward). Slots fill as the
+  // balance climbs. Start scrolled to the left, where the child begins.
+  useEffect(() => {
+    const el = columnRef.current;
+    if (el) el.scrollLeft = 0;
+  }, [rewards]);
 
   if (rewards.length === 0) {
     return (
@@ -21,55 +30,87 @@ export default function GoalBar({ childId, balance, refreshKey, onRedeem }) {
     );
   }
 
-  // One continuous climb: the rewards are milestones along a single track that
-  // runs from 0 up to the biggest reward. The fill rises with the balance, so
-  // progress flows past each milestone instead of restarting per reward.
   const maxCost = Math.max(...rewards.map(r => r.cost), 1);
-  const fillPct = Math.min(balance, maxCost) / maxCost * 100;
-  const trackHeight = Math.max(240, rewards.length * 84);
+  const byCost = {};
+  rewards.forEach(r => { byCost[r.cost] = r; });
+
+  async function doClaim() {
+    await onRedeem(claim);
+    setClaim(null);
+  }
+
+  const slots = [];
+  for (let n = 1; n <= maxCost; n++) slots.push(n);
 
   return (
     <div className={styles.bar}>
       <div className={styles.header}>
-        <span className={styles.headerLabel}>You have</span>
-        <span className={styles.headerStars}>{balance} ★</span>
+        <span className={styles.headerStars}>{balance}</span>
+        <span className={styles.headerLabel}>stars to spend</span>
       </div>
 
-      <div className={styles.track} style={{ height: trackHeight }}>
-        <div className={styles.rail}>
-          <div className={styles.railFill} style={{ height: `${fillPct}%` }} />
-        </div>
+      <div className={styles.column} ref={columnRef}>
+        {slots.map(n => {
+          const reward = byCost[n];
+          const filled = balance >= n;
 
-        {balance > 0 && balance < maxCost && (
-          <div className={styles.here} style={{ bottom: `${fillPct}%` }} aria-hidden="true" />
-        )}
-
-        {rewards.map(reward => {
-          const ready = balance >= reward.cost;
-          const remaining = reward.cost - balance;
-          const pos = Math.min(reward.cost, maxCost) / maxCost * 100;
+          if (reward) {
+            const ready = balance >= reward.cost;
+            return (
+              <button
+                key={n}
+                className={`${styles.rewardStar} ${filled ? styles.filled : ''} ${ready ? styles.ready : ''}`}
+                onClick={() => setClaim(reward)}
+                aria-label={`${reward.label}, ${reward.cost} stars${ready ? ', ready to claim' : ''}`}
+              >
+                <span className={styles.rewardImg}>
+                  <ImageDisplay imageId={reward.imageId} emoji={reward.emoji} size={40} alt={reward.label} />
+                </span>
+                <span className={styles.rewardMeta}>
+                  <span className={styles.rewardLabel}>{reward.label}</span>
+                  <span className={styles.rewardCost}>{reward.cost} ★</span>
+                </span>
+                {ready && <span className={styles.readyTag}>Tap to claim</span>}
+              </button>
+            );
+          }
 
           return (
-            <div key={reward.id} className={styles.marker} style={{ bottom: `${pos}%` }}>
-              <span className={`${styles.node} ${ready ? styles.nodeReady : ''}`} aria-hidden="true" />
-              <div className={`${styles.card} ${ready ? styles.ready : ''}`}>
-                <ImageDisplay imageId={reward.imageId} emoji={reward.emoji} size={48} alt={reward.label} />
-                <div className={styles.info}>
-                  <span className={styles.label}>{reward.label}</span>
-                  <span className={styles.cost}>{reward.cost} ★</span>
-                </div>
-                {ready ? (
-                  <button className={styles.redeemBtn} onClick={() => onRedeem(reward)}>
-                    🎉 Claim
-                  </button>
-                ) : (
-                  <span className={styles.remaining}>{remaining} to go</span>
-                )}
-              </div>
-            </div>
+            <span
+              key={n}
+              className={`${styles.star} ${filled ? styles.filled : ''}`}
+              aria-hidden="true"
+            >
+              ★
+            </span>
           );
         })}
       </div>
+
+      {claim && (
+        <div
+          className={styles.overlay}
+          role="dialog"
+          aria-modal="true"
+          aria-label={`Claim ${claim.label}`}
+          onClick={() => setClaim(null)}
+        >
+          <div className={styles.sheet} onClick={e => e.stopPropagation()}>
+            <ImageDisplay imageId={claim.imageId} emoji={claim.emoji} size={96} alt={claim.label} />
+            <span className={styles.sheetLabel}>{claim.label}</span>
+            <span className={styles.sheetCost}>{claim.cost} ★</span>
+            {balance >= claim.cost ? (
+              <>
+                <p className={styles.sheetMsg}>You have enough stars! 🎉</p>
+                <button className={styles.claimBtn} onClick={doClaim}>Claim now</button>
+              </>
+            ) : (
+              <p className={styles.sheetMsg}>{claim.cost - balance} more ★ to go</p>
+            )}
+            <button className={styles.closeBtn} onClick={() => setClaim(null)}>Close</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
