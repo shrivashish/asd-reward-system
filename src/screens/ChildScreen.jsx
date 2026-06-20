@@ -30,7 +30,7 @@ export default function ChildScreen() {
 
       {!editing && (
         <button className={styles.addBtn} onClick={() => setEditing({ name: '' })}>
-          + Add Child
+          + Add child
         </button>
       )}
 

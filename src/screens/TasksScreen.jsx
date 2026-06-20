@@ -84,13 +84,13 @@ export default function TasksScreen() {
 
       {!editing && (
         <button className={styles.addBtn} onClick={() => setEditing({ ...BLANK_TASK })}>
-          + Add Task
+          + Add task
         </button>
       )}
 
       {editing && (
         <div className={styles.editor}>
-          <h2 className={styles.editorTitle}>{editing.id ? 'Edit Task' : 'New Task'}</h2>
+          <h2 className={styles.editorTitle}>{editing.id ? 'Edit task' : 'New task'}</h2>
 
           <label className={styles.field}>
             Label
