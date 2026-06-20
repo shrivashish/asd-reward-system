@@ -12,12 +12,12 @@
 .saveBtn { background: var(--teal); color: white; }
 .saveBtn:disabled { opacity: 0.5; }
 .list { display: flex; flex-direction: column; gap: 10px; }
-.row { display: flex; align-items: center; gap: 12px; background: var(--surface); border-radius: var(--radius); padding: 12px; box-shadow: var(--shadow); }
+.row { display: flex; align-items: center; flex-wrap: wrap; gap: 10px 12px; background: var(--surface); border-radius: var(--radius); padding: 12px; box-shadow: var(--shadow); }
 .row.archived { opacity: 0.5; }
-.rowInfo { flex: 1; display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.rowInfo { flex: 1 1 120px; display: flex; flex-direction: column; gap: 2px; min-width: 0; }
 .rowLabel { font-size: 16px; font-weight: 600; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .rowMeta { font-size: 12px; color: var(--ink-soft); }
-.rowActions { display: flex; gap: 6px; flex-shrink: 0; }
+.rowActions { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
 .editBtn, .archiveBtn, .todayBtn, .todayOn, .deleteBtn { min-height: 40px; padding: 6px 12px; border-radius: var(--radius); font-size: 13px; font-weight: 700; }
 .editBtn { background: var(--surface-2); color: var(--ink); }
 .archiveBtn { background: var(--surface-2); color: var(--coral); }
@@ -34,3 +34,15 @@
 .fadeActions { display: flex; gap: 10px; margin-top: 6px; }
 .fadeStart { min-height: 40px; padding: 6px 14px; border-radius: var(--radius); font-size: 14px; font-weight: 700; background: var(--teal); color: white; }
 .fadeLater { min-height: 40px; padding: 6px 14px; border-radius: var(--radius); font-size: 14px; font-weight: 700; background: var(--surface-2); color: var(--ink-soft); }
+
+/* Tablet & up: keep the form/controls readable and centered, but let the
+   task list flow into a responsive grid. */
+@media (min-width: 700px) {
+  .addBtn, .editor, .fade { max-width: var(--form-max); width: 100%; margin-inline: auto; }
+  .list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 12px;
+    align-items: start;
+  }
+}

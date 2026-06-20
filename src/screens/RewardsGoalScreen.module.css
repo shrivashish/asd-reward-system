@@ -22,3 +22,15 @@
 .editBtn, .deleteBtn { min-height: 40px; padding: 6px 12px; border-radius: var(--radius); font-size: 13px; font-weight: 700; }
 .editBtn { background: var(--surface-2); color: var(--ink); }
 .deleteBtn { background: var(--coral); color: white; }
+
+/* Tablet & up: centered form, reward ladder flows into a grid. */
+@media (min-width: 700px) {
+  .addBtn, .editor, .intro { max-width: var(--form-max); width: 100%; margin-inline: auto; }
+  .intro { text-align: center; }
+  .list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 12px;
+    align-items: start;
+  }
+}

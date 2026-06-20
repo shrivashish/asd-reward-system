@@ -6,10 +6,14 @@
   background: var(--surface);
   border-top: 1px solid var(--line);
   display: flex;
+  justify-content: center;
+  /* Keep the tab group aligned to the centered content column on wide screens. */
+  padding-inline: max(0px, calc((100% - var(--content-max)) / 2));
   z-index: 20;
 }
 .item {
-  flex: 1;
+  flex: 1 1 0;
+  max-width: 200px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -24,3 +28,8 @@
 .item.active { color: var(--teal); }
 .icon { font-size: 20px; }
 .label { font-family: var(--font-body); font-weight: 600; }
+
+@media (min-width: 700px) {
+  .item { padding: 12px 8px; font-size: 13px; gap: 4px; }
+  .icon { font-size: 24px; }
+}
