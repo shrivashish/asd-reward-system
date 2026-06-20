@@ -2,23 +2,39 @@ import { useRef, useState } from 'react';
 import { putImage } from '../data/repo';
 import styles from './ImagePicker.module.css';
 
-const EMOJI_SET = [
-  // Daily routine & self-care
-  '⏰','🛏️','😴','🦷','🪥','🛁','🚿','🧼','🧴','🧻',
-  '🚽','🧺','🧹','🧽','👕','👖','🧦','👟','🧥','🎒',
-  '💊','🪮','🍽️','💧',
-  // Daily needs & around the home
-  '🏠','🚪','🔑','🛒','🚗','🚌','🚲','🪑','💡','📱',
-  '💻','📚','☂️','👓','⌚','🧸',
-  // Food & treats kids like
-  '🍎','🍌','🍇','🍓','🍊','🍉','🥕','🥦','🌽','🥗',
-  '🍞','🥪','🧀','🥚','🥛','🧃','🍕','🍔','🍟','🌮',
-  '🍝','🍜','🍚','🍗','🍤','🥞','🧇','🍪','🍩','🍫',
-  '🍬','🍭','🧁','🎂','🍦','🥤','🍿',
-  // Play, activities & rewards
-  '🎬','🎮','🎨','⚽','🏀','🏊','🚴','🏃','🎵','🎤',
-  '🎸','🥁','🧩','🎲','🪁','🐕','🐈','🐠','🌳','🌈',
-  '🌟','⭐','💪','🎁','✈️','🎪','🎯',
+const EMOJI_GROUPS = [
+  {
+    title: 'Routine & self-care',
+    emojis: [
+      '⏰','🛏️','😴','🦷','🪥','🛁','🚿','🧼','🧴','🧻',
+      '🚽','🧺','🧹','🧽','👕','👖','🧦','👟','🧥','🎒',
+      '💊','🪮','🍽️','💧',
+    ],
+  },
+  {
+    title: 'Home & daily needs',
+    emojis: [
+      '🏠','🚪','🔑','🛒','🚗','🚌','🚲','🪑','💡','📱',
+      '💻','📚','☂️','👓','⌚','🧸',
+    ],
+  },
+  {
+    title: 'Food & treats',
+    emojis: [
+      '🍎','🍌','🍇','🍓','🍊','🍉','🥕','🥦','🌽','🥗',
+      '🍞','🥪','🧀','🥚','🥛','🧃','🍕','🍔','🍟','🌮',
+      '🍝','🍜','🍚','🍗','🍤','🥞','🧇','🍪','🍩','🍫',
+      '🍬','🍭','🧁','🎂','🍦','🥤','🍿',
+    ],
+  },
+  {
+    title: 'Play & rewards',
+    emojis: [
+      '🎬','🎮','🎨','⚽','🏀','🏊','🚴','🏃','🎵','🎤',
+      '🎸','🥁','🧩','🎲','🪁','🐕','🐈','🐠','🌳','🌈',
+      '🌟','⭐','💪','🎁','✈️','🎪','🎯',
+    ],
+  },
 ];
 
 export default function ImagePicker({ value, emoji: currentEmoji, onImage, onEmoji }) {
@@ -44,17 +60,24 @@ export default function ImagePicker({ value, emoji: currentEmoji, onImage, onEmo
       </div>
 
       {tab === 'emoji' && (
-        <div className={styles.emojiGrid}>
-          {EMOJI_SET.map(em => (
-            <button
-              key={em}
-              className={`${styles.emojiBtn} ${currentEmoji === em ? styles.selected : ''}`}
-              onClick={() => onEmoji(em)}
-              aria-label={em}
-              aria-pressed={currentEmoji === em}
-            >
-              {em}
-            </button>
+        <div className={styles.emojiScroll}>
+          {EMOJI_GROUPS.map(group => (
+            <div key={group.title} className={styles.emojiGroup}>
+              <span className={styles.groupTitle}>{group.title}</span>
+              <div className={styles.emojiGrid}>
+                {group.emojis.map(em => (
+                  <button
+                    key={em}
+                    className={`${styles.emojiBtn} ${currentEmoji === em ? styles.selected : ''}`}
+                    onClick={() => onEmoji(em)}
+                    aria-label={em}
+                    aria-pressed={currentEmoji === em}
+                  >
+                    {em}
+                  </button>
+                ))}
+              </div>
+            </div>
           ))}
         </div>
       )}
