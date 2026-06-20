@@ -176,9 +176,6 @@ export default function MiniPuzzle({ onDone }) {
             {answered === 'correct' ? '⭐ Yes!' : '👍 Good try!'}
           </p>
         )}
-        {!answered && (
-          <button className={styles.skip} onClick={onDone}>Skip</button>
-        )}
       </div>
     </div>
   );
