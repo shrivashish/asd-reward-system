@@ -54,6 +54,13 @@ export async function archiveTask(taskId) {
   if (task) await db.put('tasks', { ...task, active: false });
 }
 
+// Permanently removes a task template. Earned stars stay in the ledger (P4),
+// so the balance is unaffected — only the task itself goes away.
+export async function deleteTask(taskId) {
+  const db = await getDB();
+  await db.delete('tasks', taskId);
+}
+
 // ── Today's board ─────────────────────────────────────────────────────────
 // A task only appears on the child's board once a grown-up has added it "for
 // today". The selection is keyed to the local day, so the board starts empty
@@ -158,6 +165,12 @@ export async function upsertReward(reward) {
   return toStore;
 }
 
+// Permanently removes a reward. Past redemptions stay in the ledger as history.
+export async function deleteReward(rewardId) {
+  const db = await getDB();
+  await db.delete('rewards', rewardId);
+}
+
 // ── Goals ────────────────────────────────────────────────────────────────
 export async function getGoal(childId) {
   const db = await getDB();
@@ -227,6 +240,20 @@ export async function upsertChild(child) {
   const toStore = { ...child, id: child.id || uid() };
   await db.put('children', toStore);
   return toStore;
+}
+
+// Removes a child and everything tied to them: tasks, rewards, goal and the
+// whole ledger. Shared images are left in place (they aren't owned per child).
+export async function deleteChild(childId) {
+  const db = await getDB();
+  const tx = db.transaction(['children', 'tasks', 'rewards', 'goals', 'ledger'], 'readwrite');
+  for (const store of ['tasks', 'rewards', 'ledger']) {
+    const keys = await tx.objectStore(store).index('by_child').getAllKeys(childId);
+    for (const key of keys) await tx.objectStore(store).delete(key);
+  }
+  await tx.objectStore('goals').delete(childId);
+  await tx.objectStore('children').delete(childId);
+  await tx.done;
 }
 
 // ── Settings ──────────────────────────────────────────────────────────────

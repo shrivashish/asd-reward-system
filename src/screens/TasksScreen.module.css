@@ -18,9 +18,10 @@
 .rowLabel { font-size: 16px; font-weight: 600; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .rowMeta { font-size: 12px; color: var(--ink-soft); }
 .rowActions { display: flex; gap: 6px; flex-shrink: 0; }
-.editBtn, .archiveBtn, .todayBtn, .todayOn { min-height: 40px; padding: 6px 12px; border-radius: var(--radius); font-size: 13px; font-weight: 700; }
+.editBtn, .archiveBtn, .todayBtn, .todayOn, .deleteBtn { min-height: 40px; padding: 6px 12px; border-radius: var(--radius); font-size: 13px; font-weight: 700; }
 .editBtn { background: var(--surface-2); color: var(--ink); }
-.archiveBtn { background: var(--coral); color: white; }
+.archiveBtn { background: var(--surface-2); color: var(--coral); }
+.deleteBtn { background: var(--coral); color: white; }
 .todayBtn { background: var(--gold); color: white; }
 .todayOn { background: var(--teal); color: white; }
 .archivedTag { font-size: 12px; color: var(--ink-soft); }

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import {
-  listTasks, upsertTask, archiveTask, getFadeSuggestions, applyFadeStep,
+  listTasks, upsertTask, archiveTask, deleteTask, getFadeSuggestions, applyFadeStep,
   addTaskToToday, removeTaskFromToday, todayKey,
 } from '../data/repo';
 import { useApp } from '../state/AppContext';
@@ -50,6 +50,13 @@ export default function TasksScreen() {
 
   async function archive(id) {
     await archiveTask(id);
+    await loadTasks();
+    refresh();
+  }
+
+  async function remove(task) {
+    if (!window.confirm(`Delete "${task.label}"? Earned stars are kept.`)) return;
+    await deleteTask(task.id);
     await loadTasks();
     refresh();
   }
@@ -208,6 +215,7 @@ export default function TasksScreen() {
                   </>
                 )}
                 {!t.active && <span className={styles.archivedTag}>Archived</span>}
+                <button className={styles.deleteBtn} onClick={() => remove(t)}>Delete</button>
               </div>
             </div>
           );

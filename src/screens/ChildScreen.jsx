@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
-import { listChildren, upsertChild } from '../data/repo';
+import { listChildren, upsertChild, deleteChild } from '../data/repo';
 import { useApp } from '../state/AppContext';
 import styles from './ChildScreen.module.css';
 
 export default function ChildScreen() {
-  const { currentChildId, setCurrentChildId, refreshChildren } = useApp();
+  const { currentChildId, setCurrentChildId, refreshChildren, refresh } = useApp();
   const [children, setChildren] = useState([]);
   const [editing, setEditing] = useState(null);
 
@@ -22,6 +22,22 @@ export default function ChildScreen() {
     await load();
     if (!currentChildId) setCurrentChildId(saved.id);
     setEditing(null);
+  }
+
+  async function remove(child) {
+    const ok = window.confirm(
+      `Delete ${child.name}? This permanently removes their tasks, rewards and ` +
+      `all earned stars on this device. This cannot be undone.`
+    );
+    if (!ok) return;
+    await deleteChild(child.id);
+    const kids = await listChildren();
+    setChildren(kids);
+    await refreshChildren();
+    if (currentChildId === child.id) {
+      setCurrentChildId(kids[0]?.id ?? null);
+    }
+    refresh();
   }
 
   return (
@@ -66,6 +82,7 @@ export default function ChildScreen() {
               )}
               {c.id === currentChildId && <span className={styles.activeTag}>Active</span>}
               <button className={styles.editBtn} onClick={() => setEditing({ ...c })}>Edit</button>
+              <button className={styles.deleteBtn} onClick={() => remove(c)}>Delete</button>
             </div>
           </div>
         ))}

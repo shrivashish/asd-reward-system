@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { listRewards, upsertReward } from '../data/repo';
+import { listRewards, upsertReward, deleteReward } from '../data/repo';
 import { useApp } from '../state/AppContext';
 import ImagePicker from '../components/ImagePicker';
 import ImageDisplay from '../components/ImageDisplay';
@@ -25,6 +25,13 @@ export default function RewardsGoalScreen() {
     await upsertReward({ ...editing, childId: currentChildId });
     await load();
     setEditing(null);
+    refresh();
+  }
+
+  async function remove(reward) {
+    if (!window.confirm(`Delete "${reward.label}"?`)) return;
+    await deleteReward(reward.id);
+    await load();
     refresh();
   }
 
@@ -93,6 +100,7 @@ export default function RewardsGoalScreen() {
             </div>
             <div className={styles.rowActions}>
               <button className={styles.editBtn} onClick={() => setEditing({ ...r })}>Edit</button>
+              <button className={styles.deleteBtn} onClick={() => remove(r)}>Delete</button>
             </div>
           </div>
         ))}
