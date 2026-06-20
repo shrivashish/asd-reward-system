@@ -10,7 +10,7 @@ export function AppProvider({ children }) {
   const [settings, setSettingsState] = useState({
     calmMode: false, sound: false, tts: false, highContrast: false,
     parentGate: true, capabilityCheck: true,
-    puzzleOnTaskDone: false,
+    puzzleOnTaskDone: true,
     puzzleTypes: ['shapeMatch', 'colorMatch', 'counting', 'emojiPair', 'addition', 'subtraction', 'multiplication'],
   });
   const [view, setView] = useState('board'); // 'board' | 'tasks' | 'rewards' | 'child' | 'settings' | 'guide'

@@ -273,7 +273,7 @@ function defaultSettings() {
   return {
     calmMode: false, sound: false, tts: false, highContrast: false,
     parentGate: true, capabilityCheck: true,
-    puzzleOnTaskDone: false,
+    puzzleOnTaskDone: true,
     puzzleTypes: ['shapeMatch', 'colorMatch', 'counting', 'emojiPair', 'addition', 'subtraction', 'multiplication'],
   };
 }
