@@ -8,7 +8,7 @@
   flex-direction: column;
   gap: 12px;
 }
-.awardedCard { border: 2px solid var(--gold); }
+.selectedCard { border: 2px solid var(--gold); }
 .header {
   display: flex;
   align-items: center;
@@ -38,7 +38,7 @@
 }
 .note { font-size: 13px; color: var(--ink-soft); line-height: 1.3; }
 
-/* One-tap star giving: tap a star to award that many at once. */
+/* Tap a star to select how many; nothing is earned until "Mark done". */
 .stars {
   display: flex;
   gap: 8px;
@@ -56,29 +56,23 @@
   border-radius: var(--radius);
   transition: background var(--anim-dur), transform var(--anim-dur);
 }
-.star:active { background: var(--gold); color: white; transform: scale(1.05); }
+.star:active { transform: scale(1.05); }
 .star.starFilled { background: var(--gold); color: white; border-color: var(--gold-deep); }
 
-.fullBtn {
+.firstTry {
+  text-align: center;
+  font-size: 15px;
+  color: var(--ink-soft);
+  padding: 4px;
+}
+
+.doneBtn {
   min-height: var(--tap-min);
-  background: var(--gold);
+  background: var(--teal);
   color: white;
   font-family: var(--font-display);
   font-size: 18px;
   border-radius: var(--radius);
   transition: background var(--anim-dur);
 }
-.fullBtn:active { background: var(--gold-deep); }
-
-.doneRow { display: flex; align-items: center; gap: 10px; }
-.awardedTag { font-weight: 700; color: var(--gold-deep); font-size: 15px; }
-.complete {
-  min-height: 44px;
-  margin-left: auto;
-  padding: 8px 16px;
-  border-radius: var(--radius);
-  background: var(--teal);
-  color: white;
-  font-weight: 700;
-  font-size: 15px;
-}
+.doneBtn:active { background: var(--teal-deep, var(--teal)); filter: brightness(0.95); }

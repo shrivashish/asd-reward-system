@@ -8,54 +8,61 @@ import styles from './TaskCard.module.css';
 
 export default function TaskCard({ task, onChange }) {
   const { settings } = useApp();
-  const [awarded, setAwarded] = useState(0);
+  const isFirstTry = task.mode === 'firstTry';
+  const [selected, setSelected] = useState(isFirstTry ? task.maxStars : 0);
   const [celebrate, setCelebrate] = useState(0);
 
   const showNote = settings.capabilityCheck && task.capabilityNote;
 
-  async function give(amount) {
-    if (amount <= 0) return;
-    await addEarn(task.childId, task.id, amount);
-    setAwarded(a => a + amount);
-    setCelebrate(amount);
+  // Tapping a star only selects it — nothing is earned until "Mark done".
+  function pick(n) {
+    setSelected(s => (s === n ? 0 : n));
   }
 
-  function celebrationDone() {
-    setCelebrate(0);
-    onChange();
+  async function done() {
+    if (selected > 0) {
+      await addEarn(task.childId, task.id, selected);
+      setCelebrate(selected); // show the "Good job" popup, then finish
+    } else {
+      await finish();
+    }
   }
 
-  async function complete() {
+  async function finish() {
     await markTaskDone(task.id);
     onChange();
   }
 
+  function celebrationDone() {
+    setCelebrate(0);
+    finish();
+  }
+
   return (
-    <div className={`${styles.card} ${awarded > 0 ? styles.awardedCard : ''}`}>
+    <div className={`${styles.card} ${selected > 0 ? styles.selectedCard : ''}`}>
       {celebrate > 0 && <CalmCelebration stars={celebrate} onDone={celebrationDone} />}
+
       <div className={styles.header}>
         <ImageDisplay imageId={task.imageId} emoji={task.emoji} size={72} alt={task.label} />
         <div className={styles.info}>
           <span className={styles.label}>{task.label}</span>
-          {task.mode === 'firstTry' && <span className={styles.badge}>First try</span>}
+          {isFirstTry && <span className={styles.badge}>First try</span>}
           {showNote && <span className={styles.note}>💡 {task.capabilityNote}</span>}
         </div>
         <TTSButton text={task.label} />
       </div>
 
-      {task.mode === 'firstTry' ? (
-        <button className={styles.fullBtn} onClick={() => give(task.maxStars)}>
-          🌟 Give {task.maxStars} ★
-        </button>
+      {isFirstTry ? (
+        <p className={styles.firstTry}>🌟 Gave it a try — full {task.maxStars} ★</p>
       ) : (
-        <div className={styles.stars} role="group" aria-label={`Give stars for ${task.label}`}>
+        <div className={styles.stars} role="group" aria-label={`Choose stars for ${task.label}`}>
           {Array.from({ length: task.maxStars }).map((_, i) => (
             <button
               key={i}
-              className={`${styles.star} ${i < awarded ? styles.starFilled : ''}`}
-              onClick={() => give(i + 1)}
-              aria-label={`Give ${i + 1} star${i > 0 ? 's' : ''}`}
-              aria-pressed={i < awarded}
+              className={`${styles.star} ${i < selected ? styles.starFilled : ''}`}
+              onClick={() => pick(i + 1)}
+              aria-label={`${i + 1} star${i > 0 ? 's' : ''}`}
+              aria-pressed={i < selected}
             >
               ★
             </button>
@@ -63,12 +70,9 @@ export default function TaskCard({ task, onChange }) {
         </div>
       )}
 
-      {awarded > 0 && (
-        <div className={styles.doneRow}>
-          <span className={styles.awardedTag}>★ {awarded} given today</span>
-          <button className={styles.complete} onClick={complete}>✓ Mark done</button>
-        </div>
-      )}
+      <button className={styles.doneBtn} onClick={done}>
+        ✓ Mark done{selected > 0 ? ` (+${selected} ★)` : ''}
+      </button>
     </div>
   );
 }
