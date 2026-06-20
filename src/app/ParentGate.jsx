@@ -9,7 +9,7 @@ function newChallenge() {
 }
 
 export default function ParentGate() {
-  const { setParentUnlocked } = useApp();
+  const { setParentUnlocked, setView } = useApp();
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState('');
   const [error, setError] = useState('');
@@ -29,6 +29,7 @@ export default function ParentGate() {
   function submit() {
     if (input.trim() === challenge.a) {
       setParentUnlocked(true);
+      setView('tasks');
       setOpen(false);
     } else {
       setError('Not quite — try again');

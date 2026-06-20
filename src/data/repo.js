@@ -169,6 +169,18 @@ export async function setGoal(childId, rewardId) {
   await db.put('goals', { childId, rewardId });
 }
 
+// ── Data reset ─────────────────────────────────────────────────────────────
+// Wipes everything on this device — children, tasks, rewards, stars, images
+// and settings. Irreversible; the caller should confirm and then reload so the
+// app re-seeds from scratch.
+export async function clearAllData() {
+  const db = await getDB();
+  const stores = ['children', 'tasks', 'rewards', 'goals', 'ledger', 'images', 'settings'];
+  const tx = db.transaction(stores, 'readwrite');
+  await Promise.all(stores.map(s => tx.objectStore(s).clear()));
+  await tx.done;
+}
+
 // ── Images ───────────────────────────────────────────────────────────────
 export async function putImage(blob) {
   const resized = await resizeBlob(blob, 512);
