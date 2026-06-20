@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { listRewards } from '../data/repo';
 import ImageDisplay from './ImageDisplay';
 import styles from './GoalBar.module.css';
@@ -6,7 +6,6 @@ import styles from './GoalBar.module.css';
 export default function GoalBar({ childId, balance, refreshKey, onRedeem }) {
   const [rewards, setRewards] = useState([]);
   const [claim, setClaim] = useState(null);
-  const columnRef = useRef(null);
 
   useEffect(() => {
     if (!childId) return;
@@ -14,13 +13,6 @@ export default function GoalBar({ childId, balance, refreshKey, onRedeem }) {
       setRewards([...list].sort((a, b) => a.cost - b.cost))
     );
   }, [childId, refreshKey]);
-
-  // The row runs left (star 1) to right (the biggest reward). Slots fill as the
-  // balance climbs. Start scrolled to the left, where the child begins.
-  useEffect(() => {
-    const el = columnRef.current;
-    if (el) el.scrollLeft = 0;
-  }, [rewards]);
 
   if (rewards.length === 0) {
     return (
@@ -49,7 +41,7 @@ export default function GoalBar({ childId, balance, refreshKey, onRedeem }) {
         <span className={styles.headerLabel}>stars to spend</span>
       </div>
 
-      <div className={styles.column} ref={columnRef}>
+      <div className={styles.column}>
         {slots.map(n => {
           const reward = byCost[n];
           const filled = balance >= n;

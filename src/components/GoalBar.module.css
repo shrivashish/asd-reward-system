@@ -16,15 +16,16 @@
 .headerStars { font-family: var(--font-display); font-size: 40px; color: var(--teal); line-height: 1; }
 .headerLabel { font-size: 14px; color: var(--ink-soft); }
 
-/* A single horizontal row of star slots: star 1 at the left, the biggest
-   reward at the right. Slots fill left-to-right as the balance climbs; reward
-   stars carry their image. Scrolls horizontally when the ladder is long. */
+/* A horizontal track of star slots: star 1 first, the biggest reward last.
+   Slots fill left-to-right as the balance climbs; reward stars carry their
+   image. The track wraps onto the next line when the ladder is long. */
 .column {
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   align-items: center;
+  justify-content: center;
   gap: 6px;
-  overflow-x: auto;
   padding: 8px 4px;
 }
 
