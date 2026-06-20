@@ -1,5 +1,8 @@
 import { useState, useEffect } from 'react';
-import { listTasks, upsertTask, archiveTask, getFadeSuggestions, applyFadeStep } from '../data/repo';
+import {
+  listTasks, upsertTask, archiveTask, getFadeSuggestions, applyFadeStep,
+  addTaskToToday, removeTaskFromToday, todayKey,
+} from '../data/repo';
 import { useApp } from '../state/AppContext';
 import ImagePicker from '../components/ImagePicker';
 import ImageDisplay from '../components/ImageDisplay';
@@ -50,6 +53,20 @@ export default function TasksScreen() {
     await loadTasks();
     refresh();
   }
+
+  async function addToday(id) {
+    await addTaskToToday(id);
+    await loadTasks();
+    refresh();
+  }
+
+  async function removeToday(id) {
+    await removeTaskFromToday(id);
+    await loadTasks();
+    refresh();
+  }
+
+  const today = todayKey();
 
   return (
     <div className={styles.wrap}>
@@ -161,26 +178,40 @@ export default function TasksScreen() {
       )}
 
       <div className={styles.list}>
-        {tasks.map(t => (
-          <div key={t.id} className={`${styles.row} ${!t.active ? styles.archived : ''}`}>
-            <ImageDisplay imageId={t.imageId} emoji={t.emoji} size={44} alt={t.label} />
-            <div className={styles.rowInfo}>
-              <span className={styles.rowLabel}>{t.label}</span>
-              <span className={styles.rowMeta}>
-                {t.mode === 'firstTry' ? 'First try' : 'Skill'} · max {t.maxStars}★
-              </span>
+        {tasks.map(t => {
+          const onToday = t.active && t.todayDate === today && t.doneDate !== today;
+          const doneToday = t.active && t.doneDate === today;
+          return (
+            <div key={t.id} className={`${styles.row} ${!t.active ? styles.archived : ''}`}>
+              <ImageDisplay imageId={t.imageId} emoji={t.emoji} size={44} alt={t.label} />
+              <div className={styles.rowInfo}>
+                <span className={styles.rowLabel}>{t.label}</span>
+                <span className={styles.rowMeta}>
+                  {t.mode === 'firstTry' ? 'First try' : 'Skill'} · max {t.maxStars}★
+                  {doneToday && ' · done today'}
+                </span>
+              </div>
+              <div className={styles.rowActions}>
+                {t.active && (
+                  <>
+                    {onToday ? (
+                      <button className={styles.todayOn} onClick={() => removeToday(t.id)}>
+                        On today ✓
+                      </button>
+                    ) : (
+                      <button className={styles.todayBtn} onClick={() => addToday(t.id)}>
+                        {doneToday ? 'Add again' : 'Add for today'}
+                      </button>
+                    )}
+                    <button className={styles.editBtn} onClick={() => setEditing({ ...t })}>Edit</button>
+                    <button className={styles.archiveBtn} onClick={() => archive(t.id)}>Archive</button>
+                  </>
+                )}
+                {!t.active && <span className={styles.archivedTag}>Archived</span>}
+              </div>
             </div>
-            <div className={styles.rowActions}>
-              {t.active && (
-                <>
-                  <button className={styles.editBtn} onClick={() => setEditing({ ...t })}>Edit</button>
-                  <button className={styles.archiveBtn} onClick={() => archive(t.id)}>Archive</button>
-                </>
-              )}
-              {!t.active && <span className={styles.archivedTag}>Archived</span>}
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );

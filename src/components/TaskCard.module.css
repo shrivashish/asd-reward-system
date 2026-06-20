@@ -1,17 +1,19 @@
 .card {
-  display: flex;
-  align-items: center;
-  gap: 16px;
   background: var(--surface);
   border-radius: var(--radius-lg);
   padding: 16px;
   box-shadow: var(--shadow);
   width: 100%;
-  text-align: left;
-  min-height: 100px;
-  transition: transform var(--anim-dur);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
-.card:active { transform: scale(0.98); }
+.awardedCard { border: 2px solid var(--gold); }
+.header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
 .info {
   flex: 1;
   display: flex;
@@ -34,3 +36,53 @@
   border-radius: 99px;
   padding: 2px 8px;
 }
+
+.cardActions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.give {
+  flex: 1;
+  min-height: var(--tap-min);
+  background: var(--gold);
+  color: white;
+  font-family: var(--font-display);
+  font-size: 18px;
+  border-radius: var(--radius);
+  transition: background var(--anim-dur);
+}
+.give:active { background: var(--gold-deep); }
+.awardedTag { font-weight: 700; color: var(--gold-deep); font-size: 15px; }
+.giveMore {
+  min-height: 44px;
+  padding: 8px 14px;
+  border-radius: var(--radius);
+  background: var(--surface-2);
+  color: var(--ink);
+  font-weight: 700;
+  font-size: 14px;
+}
+.complete {
+  min-height: 44px;
+  margin-left: auto;
+  padding: 8px 16px;
+  border-radius: var(--radius);
+  background: var(--teal);
+  color: white;
+  font-weight: 700;
+  font-size: 15px;
+}
+
+.picker { display: flex; flex-direction: column; gap: 12px; }
+.pickerActions { display: flex; gap: 10px; }
+.cancel, .confirm {
+  flex: 1;
+  min-height: var(--tap-min);
+  border-radius: var(--radius);
+  font-size: 17px;
+  font-weight: 700;
+}
+.cancel { background: var(--surface-2); color: var(--ink-soft); }
+.confirm { background: var(--gold); color: white; }
+.confirm:active { background: var(--gold-deep); }
+
+.firstTry { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 8px; }
+.firstTryIcon { font-size: 36px; }
+.firstTryText { color: var(--ink-soft); font-size: 15px; text-align: center; }

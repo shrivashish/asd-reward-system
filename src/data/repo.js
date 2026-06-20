@@ -54,6 +54,45 @@ export async function archiveTask(taskId) {
   if (task) await db.put('tasks', { ...task, active: false });
 }
 
+// ── Today's board ─────────────────────────────────────────────────────────
+// A task only appears on the child's board once a grown-up has added it "for
+// today". The selection is keyed to the local day, so the board starts empty
+// each morning and the parent picks again. Completing a task marks it done for
+// today, which removes it from the board without touching the template.
+export function todayKey(d = new Date()) {
+  return d.toDateString();
+}
+
+export async function listTodayTasks(childId) {
+  const db = await getDB();
+  const today = todayKey();
+  const all = await db.getAllFromIndex('tasks', 'by_child', childId);
+  return all
+    .filter(t => t.active && t.todayDate === today && t.doneDate !== today)
+    .sort((a, b) => a.order - b.order);
+}
+
+export async function addTaskToToday(taskId) {
+  const db = await getDB();
+  const task = await db.get('tasks', taskId);
+  if (!task) return;
+  await db.put('tasks', { ...task, todayDate: todayKey(), doneDate: null });
+}
+
+export async function removeTaskFromToday(taskId) {
+  const db = await getDB();
+  const task = await db.get('tasks', taskId);
+  if (!task) return;
+  await db.put('tasks', { ...task, todayDate: null });
+}
+
+export async function markTaskDone(taskId) {
+  const db = await getDB();
+  const task = await db.get('tasks', taskId);
+  if (!task) return;
+  await db.put('tasks', { ...task, doneDate: todayKey() });
+}
+
 // ── Fade (P5) ─────────────────────────────────────────────────────────────
 // Surfaces skill tasks the child is doing reliably, so the parent is prompted
 // to start tapering (§11). A habit looks self-sustaining when the task earned

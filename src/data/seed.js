@@ -6,6 +6,9 @@ export async function seedIfEmpty() {
 
   const child = await upsertChild({ name: 'Leo', avatarImageId: null });
 
+  // Seeded tasks are added for today so a fresh install isn't an empty board.
+  const today = new Date().toDateString();
+
   await upsertTask({
     childId: child.id,
     label: 'Brush teeth',
@@ -16,6 +19,8 @@ export async function seedIfEmpty() {
     capabilityNote: 'Try the mild toothpaste if needed',
     active: true,
     order: 0,
+    todayDate: today,
+    doneDate: null,
     fadePlan: { taperEvery: 14, targetStars: 1, note: 'Taper to 1 star after 2 weeks of success' },
   });
 
@@ -29,6 +34,8 @@ export async function seedIfEmpty() {
     capabilityNote: '',
     active: true,
     order: 1,
+    todayDate: today,
+    doneDate: null,
     fadePlan: { taperEvery: 14, targetStars: 1, note: 'Fade after habit forms' },
   });
 
@@ -42,6 +49,8 @@ export async function seedIfEmpty() {
     capabilityNote: '',
     active: true,
     order: 2,
+    todayDate: today,
+    doneDate: null,
     fadePlan: { taperEvery: 0, targetStars: 0, note: 'Remove once comfortable' },
   });
 
