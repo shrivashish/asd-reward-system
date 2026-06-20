@@ -144,8 +144,13 @@ export default function MiniPuzzle({ onDone }) {
 
   function handleChoice(isAnswer) {
     if (answered) return;
-    setAnswered(isAnswer ? 'correct' : 'wrong');
-    setTimeout(onDone, 1100);
+    if (isAnswer) {
+      setAnswered('correct');
+      setTimeout(onDone, 1100);
+    } else {
+      setAnswered('wrong');
+      setTimeout(() => setAnswered(null), 1000); // brief feedback, then retry
+    }
   }
 
   return (
