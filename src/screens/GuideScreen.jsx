@@ -4,7 +4,7 @@ import styles from './GuideScreen.module.css';
 export default function GuideScreen() {
   return (
     <div className={styles.wrap}>
-      <h1 className={styles.h1}>Parent Guide</h1>
+      <h1 className={styles.h1}>Parent guide</h1>
       <p className={styles.intro}>
         How to use this tool well — including when not to.
       </p>

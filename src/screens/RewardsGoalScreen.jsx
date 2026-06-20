@@ -38,17 +38,17 @@ export default function RewardsGoalScreen() {
 
   return (
     <div className={styles.wrap}>
-      <h1 className={styles.h1}>Rewards & Goal</h1>
+      <h1 className={styles.h1}>Rewards & goal</h1>
 
       {!editing && (
         <button className={styles.addBtn} onClick={() => setEditing({ ...BLANK_REWARD })}>
-          + Add Reward
+          + Add reward
         </button>
       )}
 
       {editing && (
         <div className={styles.editor}>
-          <h2 className={styles.editorTitle}>{editing.id ? 'Edit Reward' : 'New Reward'}</h2>
+          <h2 className={styles.editorTitle}>{editing.id ? 'Edit reward' : 'New reward'}</h2>
 
           <label className={styles.field}>
             Label
