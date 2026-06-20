@@ -1,0 +1,19 @@
+<!-- @dsCard group="Spacing" viewport="700x160" name="Radii & Elevation" subtitle="18px / 26px / pill · one soft cool shadow" -->
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8" />
+<link rel="stylesheet" href="../styles.css" />
+<style>
+  body { background: var(--bg); padding: 20px; font-family: var(--font-body); }
+  .row { display: flex; gap: 18px; align-items: center; }
+  .box { background: var(--surface); box-shadow: var(--shadow); display: flex; align-items: center; justify-content: center; color: var(--ink-soft); font-size: 11px; font-weight: 700; text-align: center; }
+  .lab { font-size: 11px; color: var(--ink-soft); font-weight: 700; margin-top: 8px; text-align: center; }
+  .it { display: flex; flex-direction: column; align-items: center; }
+</style></head>
+<body>
+  <div class="row">
+    <div class="it"><div class="box" style="width:90px;height:64px;border-radius:var(--radius)"></div><span class="lab">--radius · 18</span></div>
+    <div class="it"><div class="box" style="width:90px;height:64px;border-radius:var(--radius-lg)"></div><span class="lab">--radius-lg · 26</span></div>
+    <div class="it"><div class="box" style="width:90px;height:44px;border-radius:var(--radius-pill)"></div><span class="lab">--radius-pill</span></div>
+    <div class="it"><div class="box" style="width:120px;height:64px;border-radius:var(--radius-lg)">soft shadow</div><span class="lab">--shadow</span></div>
+  </div>
+</body></html>

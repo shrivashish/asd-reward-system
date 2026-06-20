@@ -1,0 +1,49 @@
+<!-- @dsCard group="Components" viewport="700x400" name="Stars — Pips, Rating, Filling Board, Goal Bar" subtitle="The reward primitives: meters, award picker, goal progress" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet" href="../../styles.css" />
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+<style>
+  body { padding: 20px; background: var(--bg); }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: start; }
+  .panel { background: var(--surface); border-radius: var(--radius-lg); box-shadow: var(--shadow); padding: 16px; }
+  .lbl { font-family: var(--font-body); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; color: var(--ink-soft); margin-bottom: 10px; display: block; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+  const { StarPips, StarRating, FillingBoard, GoalBar } = window.StarBoardDesignSystem_0e745f;
+  function Demo() {
+    const [stars, setStars] = React.useState(2);
+    return (
+      <div className="grid">
+        <div className="panel" style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+          <span className="lbl">Star Pips</span>
+          <StarPips max={3} />
+          <StarPips max={5} filled={2} />
+          <StarPips max={8} filled={5} />
+          <span className="lbl" style={{ marginTop: 8 }}>Filling Board</span>
+          <FillingBoard balance={7} cost={10} />
+        </div>
+        <div className="panel">
+          <span className="lbl">Star Rating (award picker)</span>
+          <StarRating max={3} value={stars} onChange={setStars} />
+        </div>
+        <div className="panel" style={{ gridColumn: '1 / -1' }}>
+          <span className="lbl">Goal Bar — ready to redeem</span>
+          <GoalBar reward={{ label: 'Choose a movie', emoji: '🎬', cost: 10 }} balance={10} onRedeem={() => {}} />
+        </div>
+      </div>
+    );
+  }
+  ReactDOM.createRoot(document.getElementById('root')).render(<Demo />);
+</script>
+</body>
+</html>

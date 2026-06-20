@@ -1,0 +1,60 @@
+<!-- @dsCard group="Components" viewport="700x420" name="Layout — Header, Nav, Rows, Task Card, Sheet" subtitle="App scaffolding: header, bottom nav, list rows, task tile" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet" href="../../styles.css" />
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+<style>
+  body { padding: 20px; background: var(--bg); }
+  .stack { display: flex; flex-direction: column; gap: 12px; max-width: 460px; }
+  .frame { border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow); }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+  const { AppHeader, HeaderAction, BottomNav, ListRow, TaskCard, Avatar, Button, Badge } = window.StarBoardDesignSystem_0e745f;
+  const NAV = [
+    { id: 'tasks', label: 'Tasks', icon: '📋' },
+    { id: 'rewards', label: 'Rewards', icon: '🎁' },
+    { id: 'child', label: 'Child', icon: '👤' },
+    { id: 'settings', label: 'Settings', icon: '⚙️' },
+    { id: 'guide', label: 'Guide', icon: '📖' },
+  ];
+  function Demo() {
+    const [view, setView] = React.useState('tasks');
+    return (
+      <div className="stack">
+        <div className="frame">
+          <AppHeader action={<HeaderAction label="Parent area">⚙️</HeaderAction>} />
+        </div>
+        <TaskCard task={{ label: 'Brush teeth', emoji: '🦷', maxStars: 3, mode: 'skill' }} onTap={() => {}} />
+        <TaskCard task={{ label: 'Try a new food', emoji: '🍎', maxStars: 5, mode: 'firstTry' }} onTap={() => {}} />
+        <ListRow
+          leading={<Avatar emoji="🦷" />}
+          title="Brush teeth"
+          meta="Skill · max 3★"
+          trailing={<><Button variant="secondary" size="sm">Edit</Button><Button variant="danger" size="sm">Archive</Button></>}
+        />
+        <ListRow
+          leading={<Avatar emoji="🎬" />}
+          title="Choose a movie"
+          meta="10 ★"
+          selected selectColor="var(--gold)"
+          trailing={<Badge tone="reward" soft>Current goal</Badge>}
+        />
+        <div className="frame">
+          <BottomNav items={NAV} value={view} onChange={setView} />
+        </div>
+      </div>
+    );
+  }
+  ReactDOM.createRoot(document.getElementById('root')).render(<Demo />);
+</script>
+</body>
+</html>

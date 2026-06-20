@@ -1,0 +1,24 @@
+/* Star Board — Spacing, radii, elevation & sizing tokens */
+
+:root {
+  /* Spacing scale (px) — used for gaps, padding, stacks */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;   /* default card / screen padding */
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+
+  /* Corner radii — soft, rounded; nothing sharp */
+  --radius: 18px;      /* buttons, fields, rows, pills base */
+  --radius-lg: 26px;   /* cards, sheets, dialogs */
+  --radius-pill: 99px; /* toggles, star buttons, badges */
+
+  /* Elevation — one soft, cool-tinted shadow does most of the work */
+  --shadow: 0 6px 20px rgba(31, 58, 56, 0.08);
+
+  /* Accessibility — minimum touch target.
+     Every interactive element is at least this tall/wide. */
+  --tap-min: 56px;
+}
