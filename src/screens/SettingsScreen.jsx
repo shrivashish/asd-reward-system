@@ -26,12 +26,28 @@ const GROUPS = [
   },
 ];
 
+const PUZZLE_TYPES = [
+  { value: 'random',     label: 'Random',      desc: 'Different each time' },
+  { value: 'shapeMatch', label: 'Shape match',  desc: 'Tap the named shape' },
+  { value: 'colorMatch', label: 'Color match',  desc: 'Tap the named colour' },
+  { value: 'counting',   label: 'Counting',     desc: 'Count the stars' },
+  { value: 'emojiPair',  label: 'Emoji match',  desc: 'Find the matching animal' },
+];
+
 export default function SettingsScreen() {
   const { settings, updateSettings, currentChildId, refresh } = useApp();
   const importRef = useRef();
   const [correcting, setCorrecting] = useState(false);
 
   const toggle = key => updateSettings({ [key]: !settings[key] });
+
+  function cyclePuzzleType() {
+    const idx = PUZZLE_TYPES.findIndex(t => t.value === (settings.puzzleType || 'random'));
+    const next = PUZZLE_TYPES[(idx + 1) % PUZZLE_TYPES.length];
+    updateSettings({ puzzleType: next.value });
+  }
+
+  const currentPuzzleType = PUZZLE_TYPES.find(t => t.value === (settings.puzzleType || 'random')) || PUZZLE_TYPES[0];
 
   async function handleImport(e) {
     const file = e.target.files?.[0];
@@ -85,6 +101,39 @@ export default function SettingsScreen() {
           ))}
         </div>
       ))}
+
+      <div className={styles.section}>
+        <h2 className={styles.sectionTitle}>Puzzles</h2>
+        <div className={styles.row}>
+          <span className={styles.rowIcon} aria-hidden="true">🧩</span>
+          <div className={styles.rowInfo}>
+            <span className={styles.rowLabel}>Puzzle on done</span>
+            <span className={styles.rowDesc}>Show a quick puzzle each time a task is completed</span>
+          </div>
+          <button
+            role="switch"
+            aria-checked={settings.puzzleOnTaskDone}
+            className={`${styles.toggle} ${settings.puzzleOnTaskDone ? styles.on : ''}`}
+            onClick={() => toggle('puzzleOnTaskDone')}
+            aria-label="Puzzle on done"
+          >
+            <span className={styles.thumb} />
+          </button>
+        </div>
+
+        {settings.puzzleOnTaskDone && (
+          <div className={styles.row}>
+            <span className={styles.rowIcon} aria-hidden="true">🎲</span>
+            <div className={styles.rowInfo}>
+              <span className={styles.rowLabel}>Puzzle type</span>
+              <span className={styles.rowDesc}>{currentPuzzleType.desc}</span>
+            </div>
+            <button className={styles.cycleBtn} onClick={cyclePuzzleType} aria-label="Change puzzle type">
+              {currentPuzzleType.label}
+            </button>
+          </div>
+        )}
+      </div>
 
       <div className={styles.section}>
         <h2 className={styles.sectionTitle}>Data</h2>

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { addEarn, markTaskDone } from '../data/repo';
 import { useApp } from '../state/AppContext';
 import CalmCelebration from './CalmCelebration';
+import MiniPuzzle from './MiniPuzzle';
 import ImageDisplay from './ImageDisplay';
 import TTSButton from './TTSButton';
 import styles from './TaskCard.module.css';
@@ -11,6 +12,7 @@ export default function TaskCard({ task, onChange }) {
   const isFirstTry = task.mode === 'firstTry';
   const [selected, setSelected] = useState(isFirstTry ? task.maxStars : 0);
   const [celebrate, setCelebrate] = useState(0);
+  const [showPuzzle, setShowPuzzle] = useState(false);
 
   const showNote = settings.capabilityCheck && task.capabilityNote;
 
@@ -23,6 +25,8 @@ export default function TaskCard({ task, onChange }) {
     if (selected > 0) {
       await addEarn(task.childId, task.id, selected);
       setCelebrate(selected); // show the "Good job" popup, then finish
+    } else if (settings.puzzleOnTaskDone) {
+      setShowPuzzle(true);
     } else {
       await finish();
     }
@@ -35,12 +39,22 @@ export default function TaskCard({ task, onChange }) {
 
   function celebrationDone() {
     setCelebrate(0);
+    if (settings.puzzleOnTaskDone) {
+      setShowPuzzle(true);
+    } else {
+      finish();
+    }
+  }
+
+  function puzzleDone() {
+    setShowPuzzle(false);
     finish();
   }
 
   return (
     <div className={`${styles.card} ${selected > 0 ? styles.selectedCard : ''}`}>
       {celebrate > 0 && <CalmCelebration stars={celebrate} onDone={celebrationDone} />}
+      {showPuzzle && <MiniPuzzle onDone={puzzleDone} />}
 
       <div className={styles.header}>
         <ImageDisplay imageId={task.imageId} emoji={task.emoji} size={72} alt={task.label} />
