@@ -19,7 +19,9 @@
 .thumb { position: absolute; top: 3px; left: 3px; width: 24px; height: 24px; border-radius: 50%; background: white; transition: transform var(--anim-dur); box-shadow: 0 1px 4px rgba(31, 58, 56, .25); display: block; }
 .toggle.on .thumb { transform: translateX(22px); }
 
-.cycleBtn { min-height: 40px; padding: 0 14px; background: var(--surface-2); border: 1.5px solid var(--teal); border-radius: var(--radius-pill); font-size: 14px; font-weight: 700; color: var(--teal); cursor: pointer; white-space: nowrap; flex-shrink: 0; font-family: var(--font-body); }
+.chipGrid { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { display: flex; align-items: center; gap: 6px; padding: 0 14px; min-height: 42px; border-radius: var(--radius-pill); border: 1.5px solid var(--line); background: var(--surface-2); font-size: 14px; font-weight: 600; color: var(--ink-soft); cursor: pointer; font-family: var(--font-body); }
+.chip.chipOn { border-color: var(--teal); background: rgba(47,158,146,0.1); color: var(--teal); }
 .dataBtn { min-height: var(--tap-min); background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); font-size: 16px; font-weight: 600; color: var(--ink); display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; }
 .dataBtn:disabled { opacity: 0.5; cursor: default; }
 .dangerBtn { min-height: var(--tap-min); background: var(--surface); border: 1px solid var(--coral); border-radius: var(--radius); font-size: 16px; font-weight: 700; color: var(--coral); display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; }

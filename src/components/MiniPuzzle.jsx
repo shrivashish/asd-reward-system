@@ -54,14 +54,11 @@ function mathChoices(correct) {
   ]);
 }
 
-function generatePuzzle(type) {
-  const types = [
-    'shapeMatch', 'colorMatch', 'counting', 'emojiPair',
-    'addition', 'subtraction', 'multiplication',
-  ];
-  const effectiveType = type === 'random'
-    ? types[Math.floor(Math.random() * types.length)]
-    : type;
+const ALL_TYPES = ['shapeMatch', 'colorMatch', 'counting', 'emojiPair', 'addition', 'subtraction', 'multiplication'];
+
+function generatePuzzle(types) {
+  const pool = Array.isArray(types) && types.length > 0 ? types : ALL_TYPES;
+  const effectiveType = pool[Math.floor(Math.random() * pool.length)];
 
   if (effectiveType === 'shapeMatch') {
     const three = shuffle(SHAPES).slice(0, 3);
@@ -140,7 +137,7 @@ function generatePuzzle(type) {
 export default function MiniPuzzle({ onDone }) {
   const { settings } = useApp();
   const [answered, setAnswered] = useState(null); // null | 'correct' | 'wrong'
-  const puzzle = useMemo(() => generatePuzzle(settings.puzzleType || 'random'), [settings.puzzleType]);
+  const puzzle = useMemo(() => generatePuzzle(settings.puzzleTypes), [settings.puzzleTypes]);
 
   function handleChoice(isAnswer) {
     if (answered) return;

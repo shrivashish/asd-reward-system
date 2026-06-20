@@ -27,14 +27,13 @@ const GROUPS = [
 ];
 
 const PUZZLE_TYPES = [
-  { value: 'random',         label: 'Random',         desc: 'Different each time' },
-  { value: 'shapeMatch',     label: 'Shape match',    desc: 'Tap the named shape' },
-  { value: 'colorMatch',     label: 'Color match',    desc: 'Tap the named colour' },
-  { value: 'counting',       label: 'Counting',       desc: 'Count the stars' },
-  { value: 'emojiPair',      label: 'Emoji match',    desc: 'Find the matching animal' },
-  { value: 'addition',       label: 'Addition',       desc: 'Add two single-digit numbers' },
-  { value: 'subtraction',    label: 'Subtraction',    desc: 'Subtract single-digit numbers' },
-  { value: 'multiplication', label: 'Multiplication', desc: 'Multiply single-digit numbers' },
+  { value: 'shapeMatch',     icon: '🔺', label: 'Shapes'    },
+  { value: 'colorMatch',     icon: '🎨', label: 'Colors'    },
+  { value: 'counting',       icon: '⭐', label: 'Counting'  },
+  { value: 'emojiPair',      icon: '🐱', label: 'Emoji'     },
+  { value: 'addition',       icon: '➕', label: 'Addition'  },
+  { value: 'subtraction',    icon: '➖', label: 'Subtract'  },
+  { value: 'multiplication', icon: '✖️', label: 'Multiply'  },
 ];
 
 export default function SettingsScreen() {
@@ -44,13 +43,12 @@ export default function SettingsScreen() {
 
   const toggle = key => updateSettings({ [key]: !settings[key] });
 
-  function cyclePuzzleType() {
-    const idx = PUZZLE_TYPES.findIndex(t => t.value === (settings.puzzleType || 'random'));
-    const next = PUZZLE_TYPES[(idx + 1) % PUZZLE_TYPES.length];
-    updateSettings({ puzzleType: next.value });
+  function togglePuzzleType(value) {
+    const current = settings.puzzleTypes || [];
+    const next = current.includes(value) ? current.filter(v => v !== value) : [...current, value];
+    if (next.length === 0) return; // keep at least one selected
+    updateSettings({ puzzleTypes: next });
   }
-
-  const currentPuzzleType = PUZZLE_TYPES.find(t => t.value === (settings.puzzleType || 'random')) || PUZZLE_TYPES[0];
 
   async function handleImport(e) {
     const file = e.target.files?.[0];
@@ -125,16 +123,26 @@ export default function SettingsScreen() {
         </div>
 
         {settings.puzzleOnTaskDone && (
-          <div className={styles.row}>
-            <span className={styles.rowIcon} aria-hidden="true">🎲</span>
-            <div className={styles.rowInfo}>
-              <span className={styles.rowLabel}>Puzzle type</span>
-              <span className={styles.rowDesc}>{currentPuzzleType.desc}</span>
+          <>
+            <p className={styles.sectionNote}>Choose which puzzle types to include — at least one must stay on.</p>
+            <div className={styles.chipGrid}>
+              {PUZZLE_TYPES.map(t => {
+                const on = (settings.puzzleTypes || []).includes(t.value);
+                return (
+                  <button
+                    key={t.value}
+                    className={`${styles.chip} ${on ? styles.chipOn : ''}`}
+                    onClick={() => togglePuzzleType(t.value)}
+                    aria-pressed={on}
+                    aria-label={t.label}
+                  >
+                    <span aria-hidden="true">{t.icon}</span>
+                    {t.label}
+                  </button>
+                );
+              })}
             </div>
-            <button className={styles.cycleBtn} onClick={cyclePuzzleType} aria-label="Change puzzle type">
-              {currentPuzzleType.label}
-            </button>
-          </div>
+          </>
         )}
       </div>
 
