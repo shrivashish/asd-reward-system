@@ -54,6 +54,52 @@ export async function archiveTask(taskId) {
   if (task) await db.put('tasks', { ...task, active: false });
 }
 
+// Permanently removes a task template. Earned stars stay in the ledger (P4),
+// so the balance is unaffected — only the task itself goes away.
+export async function deleteTask(taskId) {
+  const db = await getDB();
+  await db.delete('tasks', taskId);
+}
+
+// ── Today's board ─────────────────────────────────────────────────────────
+// A task only appears on the child's board once a grown-up has added it "for
+// today". The selection is keyed to the local day, so the board starts empty
+// each morning and the parent picks again. Completing a task marks it done for
+// today, which removes it from the board without touching the template.
+export function todayKey(d = new Date()) {
+  return d.toDateString();
+}
+
+export async function listTodayTasks(childId) {
+  const db = await getDB();
+  const today = todayKey();
+  const all = await db.getAllFromIndex('tasks', 'by_child', childId);
+  return all
+    .filter(t => t.active && t.todayDate === today && t.doneDate !== today)
+    .sort((a, b) => a.order - b.order);
+}
+
+export async function addTaskToToday(taskId) {
+  const db = await getDB();
+  const task = await db.get('tasks', taskId);
+  if (!task) return;
+  await db.put('tasks', { ...task, todayDate: todayKey(), doneDate: null });
+}
+
+export async function removeTaskFromToday(taskId) {
+  const db = await getDB();
+  const task = await db.get('tasks', taskId);
+  if (!task) return;
+  await db.put('tasks', { ...task, todayDate: null });
+}
+
+export async function markTaskDone(taskId) {
+  const db = await getDB();
+  const task = await db.get('tasks', taskId);
+  if (!task) return;
+  await db.put('tasks', { ...task, doneDate: todayKey() });
+}
+
 // ── Fade (P5) ─────────────────────────────────────────────────────────────
 // Surfaces skill tasks the child is doing reliably, so the parent is prompted
 // to start tapering (§11). A habit looks self-sustaining when the task earned
@@ -119,6 +165,12 @@ export async function upsertReward(reward) {
   return toStore;
 }
 
+// Permanently removes a reward. Past redemptions stay in the ledger as history.
+export async function deleteReward(rewardId) {
+  const db = await getDB();
+  await db.delete('rewards', rewardId);
+}
+
 // ── Goals ────────────────────────────────────────────────────────────────
 export async function getGoal(childId) {
   const db = await getDB();
@@ -128,6 +180,18 @@ export async function getGoal(childId) {
 export async function setGoal(childId, rewardId) {
   const db = await getDB();
   await db.put('goals', { childId, rewardId });
+}
+
+// ── Data reset ─────────────────────────────────────────────────────────────
+// Wipes everything on this device — children, tasks, rewards, stars, images
+// and settings. Irreversible; the caller should confirm and then reload so the
+// app re-seeds from scratch.
+export async function clearAllData() {
+  const db = await getDB();
+  const stores = ['children', 'tasks', 'rewards', 'goals', 'ledger', 'images', 'settings'];
+  const tx = db.transaction(stores, 'readwrite');
+  await Promise.all(stores.map(s => tx.objectStore(s).clear()));
+  await tx.done;
 }
 
 // ── Images ───────────────────────────────────────────────────────────────
@@ -176,6 +240,20 @@ export async function upsertChild(child) {
   const toStore = { ...child, id: child.id || uid() };
   await db.put('children', toStore);
   return toStore;
+}
+
+// Removes a child and everything tied to them: tasks, rewards, goal and the
+// whole ledger. Shared images are left in place (they aren't owned per child).
+export async function deleteChild(childId) {
+  const db = await getDB();
+  const tx = db.transaction(['children', 'tasks', 'rewards', 'goals', 'ledger'], 'readwrite');
+  for (const store of ['tasks', 'rewards', 'ledger']) {
+    const keys = await tx.objectStore(store).index('by_child').getAllKeys(childId);
+    for (const key of keys) await tx.objectStore(store).delete(key);
+  }
+  await tx.objectStore('goals').delete(childId);
+  await tx.objectStore('children').delete(childId);
+  await tx.done;
 }
 
 // ── Settings ──────────────────────────────────────────────────────────────

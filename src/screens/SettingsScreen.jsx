@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 import { useApp } from '../state/AppContext';
 import { exportBundle, importBundle } from '../data/exportImport';
+import { clearAllData } from '../data/repo';
 import ConfirmCorrection from '../components/ConfirmCorrection';
 import styles from './SettingsScreen.module.css';
 
@@ -42,6 +43,16 @@ export default function SettingsScreen() {
       alert('Import failed: ' + err.message);
     }
     e.target.value = '';
+  }
+
+  async function handleClearData() {
+    const ok = window.confirm(
+      'This erases all children, tasks, rewards and earned stars on this device. ' +
+      'This cannot be undone. Export a backup first if you want to keep it.\n\nClear all data?'
+    );
+    if (!ok) return;
+    await clearAllData();
+    window.location.reload();
   }
 
   return (
@@ -88,6 +99,9 @@ export default function SettingsScreen() {
           📂 Import backup
         </button>
         <input ref={importRef} type="file" accept=".json" style={{ display: 'none' }} onChange={handleImport} />
+        <button className={styles.dangerBtn} onClick={handleClearData}>
+          🗑️ Clear all data
+        </button>
       </div>
 
       <div className={styles.section}>

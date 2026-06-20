@@ -2,27 +2,39 @@ import { useState, useEffect } from 'react';
 import { useApp } from '../state/AppContext';
 import styles from './ParentGate.module.css';
 
-const CHALLENGE = { q: 'What is 7 + 5?', a: '12' };
+function newChallenge() {
+  const a = 1 + Math.floor(Math.random() * 9); // 1–9
+  const b = 1 + Math.floor(Math.random() * 9); // 1–9
+  return { q: `What is ${a} + ${b}?`, a: String(a + b) };
+}
 
 export default function ParentGate() {
-  const { setParentUnlocked } = useApp();
+  const { setParentUnlocked, setView } = useApp();
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState('');
   const [error, setError] = useState('');
+  const [challenge, setChallenge] = useState(newChallenge);
 
   useEffect(() => {
-    const handler = () => { setOpen(true); setInput(''); setError(''); };
+    const handler = () => {
+      setOpen(true);
+      setInput('');
+      setError('');
+      setChallenge(newChallenge());
+    };
     document.addEventListener('open-parent-gate', handler);
     return () => document.removeEventListener('open-parent-gate', handler);
   }, []);
 
   function submit() {
-    if (input.trim() === CHALLENGE.a) {
+    if (input.trim() === challenge.a) {
       setParentUnlocked(true);
+      setView('tasks');
       setOpen(false);
     } else {
       setError('Not quite — try again');
       setInput('');
+      setChallenge(newChallenge());
     }
   }
 
@@ -31,7 +43,7 @@ export default function ParentGate() {
   return (
     <div className={styles.overlay} role="dialog" aria-modal="true" aria-label="Parent gate">
       <div className={styles.sheet}>
-        <p className={styles.q}>{CHALLENGE.q}</p>
+        <p className={styles.q}>{challenge.q}</p>
         <input
           className={styles.input}
           type="number"

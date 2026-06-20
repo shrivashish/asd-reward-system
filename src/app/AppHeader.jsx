@@ -1,3 +1,4 @@
+import { LayoutGrid } from 'lucide-react';
 import { useApp } from '../state/AppContext';
 import styles from './AppHeader.module.css';
 
@@ -13,6 +14,7 @@ export default function AppHeader() {
         document.dispatchEvent(new CustomEvent('open-parent-gate'));
       } else {
         setParentUnlocked(true);
+        setView('tasks');
       }
     }
   }
@@ -23,9 +25,9 @@ export default function AppHeader() {
       <button
         className={styles.parentBtn}
         onClick={handleParentToggle}
-        aria-label={parentUnlocked ? 'Exit parent area' : 'Parent area'}
+        aria-label={parentUnlocked ? 'Back to board' : 'Parent area'}
       >
-        {parentUnlocked ? '← Board' : '⚙️'}
+        {parentUnlocked ? <LayoutGrid size={22} aria-hidden="true" /> : '⚙️'}
       </button>
     </header>
   );

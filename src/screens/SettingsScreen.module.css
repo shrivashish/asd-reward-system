@@ -19,3 +19,4 @@
 
 .dataBtn { min-height: var(--tap-min); background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); font-size: 16px; font-weight: 600; color: var(--ink); display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; }
 .dataBtn:disabled { opacity: 0.5; cursor: default; }
+.dangerBtn { min-height: var(--tap-min); background: var(--surface); border: 1px solid var(--coral); border-radius: var(--radius); font-size: 16px; font-weight: 700; color: var(--coral); display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; }

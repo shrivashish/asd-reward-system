@@ -1,21 +1,19 @@
 import { useState, useEffect } from 'react';
-import { listTasks, addRedeem } from '../data/repo';
+import { listTodayTasks, addRedeem } from '../data/repo';
 import { useApp } from '../state/AppContext';
 import { useBalance } from '../state/useBalance';
 import GoalBar from '../components/GoalBar';
 import TaskCard from '../components/TaskCard';
-import AwardSheet from '../components/AwardSheet';
 import styles from './BoardScreen.module.css';
 
 export default function BoardScreen() {
   const { currentChildId, refreshKey, refresh } = useApp();
   const balance = useBalance(currentChildId, refreshKey);
   const [tasks, setTasks] = useState([]);
-  const [activeTask, setActiveTask] = useState(null);
 
   useEffect(() => {
     if (!currentChildId) return;
-    listTasks(currentChildId).then(setTasks);
+    listTodayTasks(currentChildId).then(setTasks);
   }, [currentChildId, refreshKey]);
 
   async function handleRedeem(reward) {
@@ -43,22 +41,16 @@ export default function BoardScreen() {
 
       <div className={styles.taskList} role="list">
         {tasks.length === 0 && (
-          <p className={styles.empty}>No tasks yet — open the parent area to add some.</p>
+          <p className={styles.empty}>
+            No tasks for today yet — a grown-up can add some from the Tasks screen.
+          </p>
         )}
         {tasks.map(task => (
           <div key={task.id} role="listitem">
-            <TaskCard task={task} onTap={setActiveTask} />
+            <TaskCard task={task} onChange={refresh} />
           </div>
         ))}
       </div>
-
-      {activeTask && (
-        <AwardSheet
-          task={activeTask}
-          onClose={() => setActiveTask(null)}
-          onAwarded={refresh}
-        />
-      )}
     </div>
   );
 }

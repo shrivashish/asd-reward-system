@@ -16,12 +16,29 @@
   transition: background var(--anim-dur), color var(--anim-dur);
 }
 .tab.active { background: var(--surface); color: var(--teal); }
+.emojiScroll {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-height: 240px;
+  overflow-y: auto;
+}
+.emojiGroup { display: flex; flex-direction: column; gap: 6px; }
+.groupTitle {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ink-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  position: sticky;
+  top: 0;
+  background: var(--surface);
+  padding: 2px 0;
+}
 .emojiGrid {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
   gap: 6px;
-  max-height: 200px;
-  overflow-y: auto;
 }
 .emojiBtn {
   width: 44px;

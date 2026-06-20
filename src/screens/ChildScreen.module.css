@@ -15,7 +15,8 @@
 .avatar { font-size: 32px; }
 .name { flex: 1; font-size: 18px; font-weight: 600; color: var(--ink); }
 .rowActions { display: flex; gap: 6px; align-items: center; }
-.selectBtn, .editBtn { min-height: 40px; padding: 6px 12px; border-radius: var(--radius); font-size: 13px; font-weight: 700; }
+.selectBtn, .editBtn, .deleteBtn { min-height: 40px; padding: 6px 12px; border-radius: var(--radius); font-size: 13px; font-weight: 700; }
 .selectBtn { background: var(--teal); color: white; }
 .editBtn { background: var(--surface-2); color: var(--ink); }
+.deleteBtn { background: var(--coral); color: white; }
 .activeTag { font-size: 12px; color: var(--teal); font-weight: 700; }

@@ -1,53 +1,107 @@
 import { useState, useEffect } from 'react';
-import { getGoal, listRewards, addRedeem } from '../data/repo';
-import FillingBoard from './FillingBoard';
+import { listRewards } from '../data/repo';
 import ImageDisplay from './ImageDisplay';
 import styles from './GoalBar.module.css';
 
 export default function GoalBar({ childId, balance, refreshKey, onRedeem }) {
-  const [reward, setReward] = useState(null);
+  const [rewards, setRewards] = useState([]);
+  const [claim, setClaim] = useState(null);
 
   useEffect(() => {
     if (!childId) return;
-    async function load() {
-      const goal = await getGoal(childId);
-      if (!goal) { setReward(null); return; }
-      const rewards = await listRewards(childId);
-      setReward(rewards.find(r => r.id === goal.rewardId) || null);
-    }
-    load();
+    listRewards(childId).then(list =>
+      setRewards([...list].sort((a, b) => a.cost - b.cost))
+    );
   }, [childId, refreshKey]);
 
-  if (!reward) {
+  if (rewards.length === 0) {
     return (
       <div className={styles.bar}>
-        <p className={styles.noGoal}>No goal set yet — ask a parent to set one!</p>
+        <p className={styles.noGoal}>No rewards yet — ask a parent to add some!</p>
       </div>
     );
   }
 
-  const ready = balance >= reward.cost;
+  const maxCost = Math.max(...rewards.map(r => r.cost), 1);
+  const byCost = {};
+  rewards.forEach(r => { byCost[r.cost] = r; });
+
+  async function doClaim() {
+    await onRedeem(claim);
+    setClaim(null);
+  }
+
+  const slots = [];
+  for (let n = 1; n <= maxCost; n++) slots.push(n);
 
   return (
-    <div className={`${styles.bar} ${ready ? styles.ready : ''}`}>
-      <div className={styles.top}>
-        <div className={styles.goalImage}>
-          <ImageDisplay imageId={reward.imageId} emoji={reward.emoji} size={64} alt={reward.label} />
-        </div>
-        <div className={styles.goalInfo}>
-          <span className={styles.goalLabel}>{reward.label}</span>
-          <span className={styles.balance}>
-            <span className={styles.balanceNum}>{balance}</span>
-            <span className={styles.balanceSep}> / </span>
-            <span className={styles.balanceCost}>{reward.cost} ★</span>
-          </span>
-        </div>
+    <div className={styles.bar}>
+      <div className={styles.header}>
+        <span className={styles.headerStars}>{balance}</span>
+        <span className={styles.headerLabel}>stars to spend</span>
       </div>
-      <FillingBoard balance={balance} cost={reward.cost} />
-      {ready && (
-        <button className={styles.redeemBtn} onClick={() => onRedeem(reward)}>
-          🎉 Ready to redeem!
-        </button>
+
+      <div className={styles.column}>
+        {slots.map(n => {
+          const reward = byCost[n];
+          const filled = balance >= n;
+
+          if (reward) {
+            const ready = balance >= reward.cost;
+            return (
+              <button
+                key={n}
+                className={`${styles.rewardStar} ${filled ? styles.filled : ''} ${ready ? styles.ready : ''}`}
+                onClick={() => setClaim(reward)}
+                aria-label={`${reward.label}, ${reward.cost} stars${ready ? ', ready to claim' : ''}`}
+              >
+                <span className={styles.rewardImg}>
+                  <ImageDisplay imageId={reward.imageId} emoji={reward.emoji} size={40} alt={reward.label} />
+                </span>
+                <span className={styles.rewardMeta}>
+                  <span className={styles.rewardLabel}>{reward.label}</span>
+                  <span className={styles.rewardCost}>{reward.cost} ★</span>
+                </span>
+                {ready && <span className={styles.readyTag}>Tap to claim</span>}
+              </button>
+            );
+          }
+
+          return (
+            <span
+              key={n}
+              className={`${styles.star} ${filled ? styles.filled : ''}`}
+              aria-hidden="true"
+            >
+              ★
+            </span>
+          );
+        })}
+      </div>
+
+      {claim && (
+        <div
+          className={styles.overlay}
+          role="dialog"
+          aria-modal="true"
+          aria-label={`Claim ${claim.label}`}
+          onClick={() => setClaim(null)}
+        >
+          <div className={styles.sheet} onClick={e => e.stopPropagation()}>
+            <ImageDisplay imageId={claim.imageId} emoji={claim.emoji} size={96} alt={claim.label} />
+            <span className={styles.sheetLabel}>{claim.label}</span>
+            <span className={styles.sheetCost}>{claim.cost} ★</span>
+            {balance >= claim.cost ? (
+              <>
+                <p className={styles.sheetMsg}>You have enough stars! 🎉</p>
+                <button className={styles.claimBtn} onClick={doClaim}>Claim now</button>
+              </>
+            ) : (
+              <p className={styles.sheetMsg}>{claim.cost - balance} more ★ to go</p>
+            )}
+            <button className={styles.closeBtn} onClick={() => setClaim(null)}>Close</button>
+          </div>
+        </div>
       )}
     </div>
   );
