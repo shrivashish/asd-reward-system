@@ -19,7 +19,16 @@ module.exports = (env, argv) => {
       rules: [
         {
           test: /\.jsx?$/,
-          exclude: /node_modules/,
+          // Transpile our source AND the dependencies that ship modern syntax
+          // (idb, lucide-react) so the bundle is parseable by old WebKit.
+          // Everything else in node_modules (css-loader runtime, core-js, etc.)
+          // is left alone.
+          exclude: {
+            and: [
+              /node_modules/,
+              { not: [/[\\/]node_modules[\\/](idb|lucide-react)[\\/]/] },
+            ],
+          },
           use: 'babel-loader',
         },
         {
