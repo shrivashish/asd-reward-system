@@ -6,21 +6,24 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  
 }
+.card > * + * { margin-top: 12px; }
 .selectedCard { border: 2px solid var(--gold); }
 .header {
   display: flex;
   align-items: center;
-  gap: 16px;
+  
 }
+.header > * + * { margin-left: 16px; }
 .info {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  
   min-width: 0;
 }
+.info > * + * { margin-top: 4px; }
 .label {
   font-family: var(--font-display);
   font-size: 20px;
@@ -41,12 +44,13 @@
 /* Tap a star to select how many; nothing is earned until "Mark done". */
 .stars {
   display: flex;
-  gap: 8px;
+  
   flex-wrap: wrap;
   justify-content: center;
   align-content: center;
   flex: 1;
 }
+.stars > * + * { margin-left: 8px; }
 .star {
   flex: 1;
   min-width: 52px;
@@ -81,4 +85,4 @@
   border-radius: var(--radius);
   transition: background var(--anim-dur);
 }
-.doneBtn:active { background: var(--teal-deep, var(--teal)); filter: brightness(0.95); }
+.doneBtn:active { background: var(--teal-deep, var(--teal)); -webkit-filter: brightness(0.95); filter: brightness(0.95); }

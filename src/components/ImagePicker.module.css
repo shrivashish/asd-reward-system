@@ -1,11 +1,13 @@
-.wrap { display: flex; flex-direction: column; gap: 12px; }
+.wrap { display: flex; flex-direction: column;  }
+.wrap > * + * { margin-top: 12px; }
 .tabs {
   display: flex;
-  gap: 4px;
+  
   background: var(--surface-2);
   border-radius: var(--radius);
   padding: 4px;
 }
+.tabs > * + * { margin-left: 4px; }
 .tab {
   flex: 1;
   min-height: 40px;
@@ -19,17 +21,20 @@
 .emojiScroll {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  
   max-height: 240px;
   overflow-y: auto;
 }
-.emojiGroup { display: flex; flex-direction: column; gap: 6px; }
+.emojiScroll > * + * { margin-top: 12px; }
+.emojiGroup { display: flex; flex-direction: column;  }
+.emojiGroup > * + * { margin-top: 6px; }
 .groupTitle {
   font-size: 12px;
   font-weight: 700;
   color: var(--ink-soft);
   text-transform: uppercase;
   letter-spacing: 0.04em;
+  position: -webkit-sticky;
   position: sticky;
   top: 0;
   background: var(--surface);
@@ -38,7 +43,17 @@
 .emojiGrid {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
-  gap: 6px;
+  grid-gap: 6px; gap: 6px;
+}
+/* Safari 9 has no CSS Grid; fall back to a wrapping flex row of fixed-size
+   emoji buttons (44px), which lays out the same way without a grid. */
+@supports not (display: grid) {
+  .emojiGrid {
+    display: flex;
+    flex-wrap: wrap;
+    margin: -3px;
+  }
+  .emojiGrid > * { margin: 3px; }
 }
 .emojiBtn {
   width: 44px;

@@ -1,6 +1,8 @@
-.wrap { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+.wrap { display: flex; flex-direction: column; align-items: center;  }
+.wrap > * + * { margin-top: 12px; }
 .label { font-size: 16px; color: var(--ink-soft); }
-.stars { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+.stars { display: flex;  flex-wrap: wrap; justify-content: center; }
+.stars > * + * { margin-left: 8px; }
 .star {
   width: 56px;
   height: 56px;

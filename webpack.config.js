@@ -7,6 +7,10 @@ const { GenerateSW } = require('workbox-webpack-plugin');
 module.exports = (env, argv) => {
   const prod = argv.mode === 'production';
   return {
+    // Emit an ES5-compatible runtime/wrapper so old WebKit (iPad 2 / iOS 9
+    // Safari, Chrome 63) can parse the bundle. Without this, webpack's own
+    // chunk-loading code uses arrow functions and shorthand methods.
+    target: ['web', 'es5'],
     entry: './src/index.jsx',
     output: {
       path: path.resolve(__dirname, 'dist'),
