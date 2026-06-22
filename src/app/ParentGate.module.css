@@ -1,6 +1,6 @@
 .overlay {
   position: fixed;
-  inset: 0;
+  top: 0; right: 0; bottom: 0; left: 0;
   background: rgba(36,51,52,0.6);
   display: flex;
   align-items: center;
@@ -16,8 +16,9 @@
   max-width: 360px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  
 }
+.sheet > * + * { margin-top: 16px; }
 .q {
   font-family: var(--font-display);
   font-size: 22px;
@@ -36,7 +37,8 @@
   background: var(--surface-2);
 }
 .error { color: var(--coral); text-align: center; font-size: 14px; }
-.actions { display: flex; gap: 12px; }
+.actions { display: flex;  }
+.actions > * + * { margin-left: 12px; }
 .cancel, .confirm {
   flex: 1;
   min-height: var(--tap-min);

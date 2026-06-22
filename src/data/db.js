@@ -1,4 +1,4 @@
-import { openDB } from 'idb';
+import { openDB } from './idbShim';
 
 const DB_NAME = 'star-board';
 const DB_VERSION = 1;

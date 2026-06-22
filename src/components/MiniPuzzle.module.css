@@ -1,7 +1,7 @@
 /* Shared overlay — matches ParentGate exactly */
 .overlay {
   position: fixed;
-  inset: 0;
+  top: 0; right: 0; bottom: 0; left: 0;
   background: rgba(36,51,52,0.6);
   display: flex;
   align-items: center;
@@ -18,8 +18,9 @@
   max-width: 360px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  
 }
+.sheet > * + * { margin-top: 16px; }
 
 .gate {
   font-size: 13px;
@@ -75,9 +76,10 @@
 /* ── Choice mode ────────────────────────────────────────────────────────── */
 .choices {
   display: flex;
-  gap: 10px;
+  
   justify-content: center;
 }
+.choices > * + * { margin-left: 10px; }
 
 .choice {
   width: 76px;
@@ -111,8 +113,9 @@
 /* ── Shared buttons ─────────────────────────────────────────────────────── */
 .actions {
   display: flex;
-  gap: 12px;
+  
 }
+.actions > * + * { margin-left: 12px; }
 
 .cancel, .confirm {
   flex: 1;

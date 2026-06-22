@@ -1,0 +1,6 @@
+# Legacy support target: iPad 2 (iOS 9.3 Safari) and old Chrome.
+iOS >= 9
+Safari >= 9
+Chrome >= 63
+> 0.2%
+not dead

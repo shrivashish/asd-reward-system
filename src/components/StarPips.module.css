@@ -1,3 +1,4 @@
-.pips { display: flex; gap: 2px; flex-wrap: wrap; }
+.pips { display: flex;  flex-wrap: wrap; }
+.pips > * + * { margin-left: 2px; }
 .filled { color: var(--gold); font-size: 14px; }
 .empty { color: var(--line); font-size: 14px; }

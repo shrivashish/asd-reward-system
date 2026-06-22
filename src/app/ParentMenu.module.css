@@ -7,8 +7,13 @@
   border-top: 1px solid var(--line);
   display: flex;
   justify-content: center;
-  /* Keep the tab group aligned to the centered content column on wide screens. */
-  padding-inline: max(0px, calc((100% - var(--content-max)) / 2));
+  /* Keep the tab group aligned to the centered content column on wide screens.
+     Old WebKit can't parse max()/logical props, so it falls back to 0 side
+     padding (the centered column only matters on screens wider than the cap). */
+  padding-left: 0;
+  padding-right: 0;
+  padding-left: max(0px, calc((100% - var(--content-max)) / 2));
+  padding-right: max(0px, calc((100% - var(--content-max)) / 2));
   z-index: 20;
 }
 .item {
@@ -23,13 +28,15 @@
   color: var(--ink-soft);
   transition: color var(--anim-dur);
   font-size: 10px;
-  gap: 2px;
+  
 }
+.item > * + * { margin-top: 2px; }
 .item.active { color: var(--teal); }
 .icon { font-size: 20px; }
 .label { font-family: var(--font-body); font-weight: 600; }
 
 @media (min-width: 700px) {
-  .item { padding: 12px 8px; font-size: 13px; gap: 4px; }
+  .item { padding: 12px 8px; font-size: 13px; }
+  .item > * + * { margin-top: 4px; }
   .icon { font-size: 24px; }
 }

@@ -1,20 +1,27 @@
-.wrap { display: flex; flex-direction: column; gap: 16px; }
+.wrap { display: flex; flex-direction: column;  }
+.wrap > * + * { margin-top: 16px; }
 .h1 { font-family: var(--font-display); font-size: 26px; color: var(--ink); }
 .addBtn { min-height: var(--tap-min); background: var(--teal); color: white; border-radius: var(--radius); font-size: 17px; font-weight: 700; }
-.editor { background: var(--surface); border-radius: var(--radius-lg); padding: 20px; display: flex; flex-direction: column; gap: 14px; box-shadow: var(--shadow); }
-.field { display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 700; color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.04em; }
+.editor { background: var(--surface); border-radius: var(--radius-lg); padding: 20px; display: flex; flex-direction: column;  box-shadow: var(--shadow); }
+.editor > * + * { margin-top: 14px; }
+.field { display: flex; flex-direction: column;  font-size: 13px; font-weight: 700; color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.04em; }
+.field > * + * { margin-top: 6px; }
 .input { border: 1px solid var(--line); border-radius: var(--radius); padding: 10px 14px; font-size: 16px; background: var(--surface-2); color: var(--ink); font-family: var(--font-body); width: 100%; }
-.actions { display: flex; gap: 10px; }
+.actions { display: flex;  }
+.actions > * + * { margin-left: 10px; }
 .cancel, .save { flex: 1; min-height: var(--tap-min); border-radius: var(--radius); font-size: 17px; font-weight: 700; }
 .cancel { background: var(--surface-2); color: var(--ink-soft); }
 .save { background: var(--teal); color: white; }
 .save:disabled { opacity: 0.5; }
-.list { display: flex; flex-direction: column; gap: 10px; }
-.row { display: flex; align-items: center; gap: 12px; background: var(--surface); border-radius: var(--radius); padding: 14px; box-shadow: var(--shadow); }
+.list { display: flex; flex-direction: column;  }
+.list > * + * { margin-top: 10px; }
+.row { display: flex; align-items: center;  background: var(--surface); border-radius: var(--radius); padding: 14px; box-shadow: var(--shadow); }
+.row > * + * { margin-left: 12px; }
 .row.active { border: 2px solid var(--teal); }
 .avatar { font-size: 32px; }
 .name { flex: 1; font-size: 18px; font-weight: 600; color: var(--ink); }
-.rowActions { display: flex; gap: 6px; align-items: center; }
+.rowActions { display: flex;  align-items: center; }
+.rowActions > * + * { margin-left: 6px; }
 .selectBtn, .editBtn, .deleteBtn { min-height: 40px; padding: 6px 12px; border-radius: var(--radius); font-size: 13px; font-weight: 700; }
 .selectBtn { background: var(--teal); color: white; }
 .editBtn { background: var(--surface-2); color: var(--ink); }
@@ -23,11 +30,11 @@
 
 /* Tablet & up: centered add/edit controls, children listed as a grid. */
 @media (min-width: 700px) {
-  .addBtn, .editor { max-width: var(--form-max); width: 100%; margin-inline: auto; }
+  .addBtn, .editor { max-width: var(--form-max); width: 100%; margin-left: auto; margin-right: auto; }
   .list {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 12px;
+    grid-gap: 12px; gap: 12px;
     align-items: start;
   }
 }

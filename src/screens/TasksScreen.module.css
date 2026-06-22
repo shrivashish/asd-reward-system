@@ -1,23 +1,31 @@
-.wrap { display: flex; flex-direction: column; gap: 16px; }
+.wrap { display: flex; flex-direction: column;  }
+.wrap > * + * { margin-top: 16px; }
 .h1 { font-family: var(--font-display); font-size: 26px; color: var(--ink); }
 .addBtn { min-height: var(--tap-min); background: var(--teal); color: white; border-radius: var(--radius); font-size: 17px; font-weight: 700; }
-.editor { background: var(--surface); border-radius: var(--radius-lg); padding: 20px; display: flex; flex-direction: column; gap: 14px; box-shadow: var(--shadow); }
+.editor { background: var(--surface); border-radius: var(--radius-lg); padding: 20px; display: flex; flex-direction: column;  box-shadow: var(--shadow); }
+.editor > * + * { margin-top: 14px; }
 .editorTitle { font-family: var(--font-display); font-size: 20px; color: var(--ink); }
-.field { display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 700; color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.04em; }
+.field { display: flex; flex-direction: column;  font-size: 13px; font-weight: 700; color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.04em; }
+.field > * + * { margin-top: 6px; }
 .fieldLabel { font-size: 13px; font-weight: 700; color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.04em; }
 .input { border: 1px solid var(--line); border-radius: var(--radius); padding: 10px 14px; font-size: 16px; background: var(--surface-2); color: var(--ink); font-family: var(--font-body); width: 100%; }
-.editorActions { display: flex; gap: 10px; margin-top: 4px; }
+.editorActions { display: flex;  margin-top: 4px; }
+.editorActions > * + * { margin-left: 10px; }
 .cancelBtn, .saveBtn { flex: 1; min-height: var(--tap-min); border-radius: var(--radius); font-size: 17px; font-weight: 700; }
 .cancelBtn { background: var(--surface-2); color: var(--ink-soft); }
 .saveBtn { background: var(--teal); color: white; }
 .saveBtn:disabled { opacity: 0.5; }
-.list { display: flex; flex-direction: column; gap: 10px; }
-.row { display: flex; align-items: center; flex-wrap: wrap; gap: 10px 12px; background: var(--surface); border-radius: var(--radius); padding: 12px; box-shadow: var(--shadow); }
+.list { display: flex; flex-direction: column;  }
+.list > * + * { margin-top: 10px; }
+.row { display: flex; align-items: center; flex-wrap: wrap;  background: var(--surface); border-radius: var(--radius); padding: 12px; box-shadow: var(--shadow); }
+.row > * + * { margin-left: 12px; }
 .row.archived { opacity: 0.5; }
-.rowInfo { flex: 1 1 120px; display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.rowInfo { flex: 1 1 120px; display: flex; flex-direction: column;  min-width: 0; }
+.rowInfo > * + * { margin-top: 2px; }
 .rowLabel { font-size: 16px; font-weight: 600; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .rowMeta { font-size: 12px; color: var(--ink-soft); }
-.rowActions { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+.rowActions { display: flex;  flex-wrap: wrap; justify-content: flex-end; }
+.rowActions > * + * { margin-left: 6px; }
 .editBtn, .archiveBtn, .todayBtn, .todayOn, .deleteBtn { min-height: 40px; padding: 6px 12px; border-radius: var(--radius); font-size: 13px; font-weight: 700; }
 .editBtn { background: var(--surface-2); color: var(--ink); }
 .archiveBtn { background: var(--surface-2); color: var(--coral); }
@@ -26,23 +34,26 @@
 .todayOn { background: var(--teal); color: white; }
 .archivedTag { font-size: 12px; color: var(--ink-soft); }
 
-.fade { display: flex; gap: 12px; background: var(--surface); border: 2px solid var(--teal); border-radius: var(--radius-lg); padding: 16px; box-shadow: var(--shadow); }
+.fade { display: flex;  background: var(--surface); border: 2px solid var(--teal); border-radius: var(--radius-lg); padding: 16px; box-shadow: var(--shadow); }
+.fade > * + * { margin-left: 12px; }
 .fadeIcon { font-size: 28px; line-height: 1; flex-shrink: 0; }
-.fadeBody { display: flex; flex-direction: column; gap: 6px; flex: 1; min-width: 0; }
+.fadeBody { display: flex; flex-direction: column;  flex: 1; min-width: 0; }
+.fadeBody > * + * { margin-top: 6px; }
 .fadeTitle { font-family: var(--font-display); font-size: 16px; color: var(--teal); }
 .fadeText { font-size: 14px; color: var(--ink); line-height: 1.4; }
-.fadeActions { display: flex; gap: 10px; margin-top: 6px; }
+.fadeActions { display: flex;  margin-top: 6px; }
+.fadeActions > * + * { margin-left: 10px; }
 .fadeStart { min-height: 40px; padding: 6px 14px; border-radius: var(--radius); font-size: 14px; font-weight: 700; background: var(--teal); color: white; }
 .fadeLater { min-height: 40px; padding: 6px 14px; border-radius: var(--radius); font-size: 14px; font-weight: 700; background: var(--surface-2); color: var(--ink-soft); }
 
 /* Tablet & up: keep the form/controls readable and centered, but let the
    task list flow into a responsive grid. */
 @media (min-width: 700px) {
-  .addBtn, .editor, .fade { max-width: var(--form-max); width: 100%; margin-inline: auto; }
+  .addBtn, .editor, .fade { max-width: var(--form-max); width: 100%; margin-left: auto; margin-right: auto; }
   .list {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-    gap: 12px;
+    grid-gap: 12px; gap: 12px;
     align-items: start;
   }
 }

@@ -20,12 +20,19 @@ export function AppProvider({ children }) {
 
   useEffect(() => {
     async function init() {
-      await seedIfEmpty();
-      const [kids, s] = await Promise.all([listChildren(), getSettings()]);
-      setChildList(kids);
-      setSettingsState(prev => ({ ...prev, ...s }));
-      if (kids.length > 0) setCurrentChildId(kids[0].id);
-      setLoading(false);
+      try {
+        await seedIfEmpty();
+        const [kids, s] = await Promise.all([listChildren(), getSettings()]);
+        setChildList(kids);
+        setSettingsState(prev => ({ ...prev, ...s }));
+        if (kids.length > 0) setCurrentChildId(kids[0].id);
+      } catch (err) {
+        // Don't hang on the loading screen forever if storage fails — log and
+        // fall through so the app renders instead of spinning indefinitely.
+        console.error('[Star Board] Init failed:', err);
+      } finally {
+        setLoading(false);
+      }
     }
     init();
   }, []);
