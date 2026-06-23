@@ -51,20 +51,19 @@ export default function GoalBar({ childId, balance, refreshKey, onRedeem }) {
         {slots.map(n => {
           const milestone = milestones.has(n);
           const reached = balance >= n;
+          if (milestone) {
+            return (
+              <span
+                key={n}
+                className={`${styles.milestone} ${reached ? styles.milestoneReached : ''}`}
+              >
+                <MilestoneStar />
+              </span>
+            );
+          }
           return (
-            <span
-              key={n}
-              className={[
-                styles.star,
-                reached ? styles.filled : '',
-                milestone ? styles.milestone : '',
-                milestone && reached ? styles.milestoneReached : '',
-              ].join(' ')}
-            >
+            <span key={n} className={`${styles.star} ${reached ? styles.filled : ''}`}>
               ★
-              {milestone && (
-                <span className={styles.milestoneFace}>{reached ? '😄' : '🙂'}</span>
-              )}
             </span>
           );
         })}
@@ -158,5 +157,37 @@ export default function GoalBar({ childId, balance, refreshKey, onRedeem }) {
         </div>
       )}
     </div>
+  );
+}
+
+// A friendly star badge for reward milestones: a soft, rounded gold star with
+// its own little face, plus sparkles that show once the milestone is reached.
+// Colour comes from the wrapping CSS (currentColor), so it greys out before
+// it is earned and turns gold after.
+function MilestoneStar() {
+  return (
+    <svg className={styles.milestoneSvg} viewBox="0 0 24 24" aria-hidden="true">
+      <polygon
+        className={styles.milestoneShape}
+        points="12,1.8 14.9,8.2 21.8,9.1 16.8,14 18.1,20.9 12,17.5 5.9,20.9 7.2,14 2.2,9.1 9.1,8.2"
+      />
+      <circle className={styles.milestoneEye} cx="9.4" cy="11" r="1.05" />
+      <circle className={styles.milestoneEye} cx="14.6" cy="11" r="1.05" />
+      <path
+        className={styles.milestoneSmile}
+        d="M9.2 13.4 Q12 16.1 14.8 13.4"
+        fill="none"
+        strokeWidth="1.4"
+        strokeLinecap="round"
+      />
+      <path
+        className={styles.milestoneSparkle}
+        d="M21 4.2 C21.2 5 21.3 5.1 22.1 5.3 C21.3 5.5 21.2 5.6 21 6.4 C20.8 5.6 20.7 5.5 19.9 5.3 C20.7 5.1 20.8 5 21 4.2 Z"
+      />
+      <path
+        className={styles.milestoneSparkle}
+        d="M3.3 5.6 C3.45 6.2 3.55 6.3 4.2 6.45 C3.55 6.6 3.45 6.7 3.3 7.3 C3.15 6.7 3.05 6.6 2.4 6.45 C3.05 6.3 3.15 6.2 3.3 5.6 Z"
+      />
+    </svg>
   );
 }
