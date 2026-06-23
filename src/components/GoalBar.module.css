@@ -154,7 +154,8 @@
 }
 .sheetLabel { font-family: var(--font-display); font-size: 22px; color: var(--ink); text-align: center; }
 .sheetCost { font-size: 15px; color: var(--ink-soft); }
-.sheetMsg { font-size: 15px; color: var(--ink); text-align: center; margin: 4px 0; }
+.sheetMsg { font-size: 16px; color: var(--ink); text-align: center; margin: 4px 0; }
+.sheetMore { font-family: var(--font-display); font-size: 20px; color: var(--gold-deep); white-space: nowrap; }
 .claimBtn {
   width: 100%;
   min-height: var(--tap-min);
@@ -239,12 +240,12 @@
   box-shadow: 0 0 0 4px var(--gold-soft, rgba(242, 182, 50, 0.22));
 }
 
-/* Cannot afford yet: bright image, calm chrome, gentle lock. Not pressable. */
-.rewardRow.locked {
-  opacity: 0.92;
-  cursor: default;
+/* Cannot afford yet: still full-colour and tappable — tapping explains how
+   many more stars are needed. Just calmer chrome, no gold glow. */
+.rewardRow.notYet {
+  border-color: var(--line);
+  background: var(--surface);
 }
-.rewardRow.locked:active { transform: none; }
 
 .rewardImg {
   width: 72px;
@@ -258,7 +259,7 @@
   overflow: hidden;
   flex-shrink: 0;
 }
-.locked .rewardImg { border-color: var(--line); }
+.notYet .rewardImg { border-color: var(--line); }
 
 .rewardRowInfo {
   display: flex;

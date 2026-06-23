@@ -105,9 +105,8 @@ export default function GoalBar({ childId, balance, refreshKey, onRedeem }) {
                 return (
                   <button
                     key={r.id}
-                    className={`${styles.rewardRow} ${ready ? styles.rewardReady : styles.locked}`}
-                    onClick={() => ready && setClaim(r)}
-                    disabled={!ready}
+                    className={`${styles.rewardRow} ${ready ? styles.rewardReady : styles.notYet}`}
+                    onClick={() => setClaim(r)}
                     aria-label={
                       ready
                         ? `Claim ${r.label}, ${r.cost} stars`
@@ -146,16 +145,27 @@ export default function GoalBar({ childId, balance, refreshKey, onRedeem }) {
           className={styles.overlay}
           role="dialog"
           aria-modal="true"
-          aria-label={`Claim ${claim.label}`}
+          aria-label={claim.label}
           onClick={() => setClaim(null)}
         >
           <div className={styles.sheet} onClick={e => e.stopPropagation()}>
             <ImageDisplay imageId={claim.imageId} emoji={claim.emoji} size={96} alt={claim.label} />
             <span className={styles.sheetLabel}>{claim.label}</span>
             <span className={styles.sheetCost}>{claim.cost} ★</span>
-            <p className={styles.sheetMsg}>You have enough stars! 🎉</p>
-            <button className={styles.claimBtn} onClick={doClaim}>Claim now</button>
-            <button className={styles.closeBtn} onClick={() => setClaim(null)}>Not yet</button>
+            {balance >= claim.cost ? (
+              <>
+                <p className={styles.sheetMsg}>You have enough stars! 🎉</p>
+                <button className={styles.claimBtn} onClick={doClaim}>Claim now</button>
+                <button className={styles.closeBtn} onClick={() => setClaim(null)}>Not yet</button>
+              </>
+            ) : (
+              <>
+                <p className={styles.sheetMsg}>
+                  Almost there! Earn <strong className={styles.sheetMore}>{claim.cost - balance} more ★</strong> to get this.
+                </p>
+                <button className={styles.closeBtn} onClick={() => setClaim(null)}>Okay</button>
+              </>
+            )}
           </div>
         </div>
       )}
