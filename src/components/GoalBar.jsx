@@ -34,7 +34,9 @@ export default function GoalBar({ childId, balance, refreshKey, onRedeem }) {
 
   // The track is pure star progress: one slot per star up to the biggest
   // reward, filling left-to-right as the balance climbs. Rewards live behind
-  // the claim button, not inside the track.
+  // the claim button, not inside the track. Slots that land on a reward's
+  // cost are milestones — they unlock a new reward when reached.
+  const milestones = new Set(rewards.map(r => r.cost));
   const slots = [];
   for (let n = 1; n <= maxCost; n++) slots.push(n);
 
@@ -46,11 +48,23 @@ export default function GoalBar({ childId, balance, refreshKey, onRedeem }) {
       </div>
 
       <div className={styles.column} aria-hidden="true">
-        {slots.map(n => (
-          <span key={n} className={`${styles.star} ${balance >= n ? styles.filled : ''}`}>
-            ★
-          </span>
-        ))}
+        {slots.map(n => {
+          const milestone = milestones.has(n);
+          const reached = balance >= n;
+          return (
+            <span
+              key={n}
+              className={[
+                styles.star,
+                reached ? styles.filled : '',
+                milestone ? styles.milestone : '',
+                milestone && reached ? styles.milestoneReached : '',
+              ].join(' ')}
+            >
+              ★
+            </span>
+          );
+        })}
       </div>
 
       <button

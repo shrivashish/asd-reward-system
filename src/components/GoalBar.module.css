@@ -35,9 +35,24 @@
   font-size: 24px;
   color: var(--line);
   line-height: 1;
-  transition: color var(--anim-dur);
+  transition: color var(--anim-dur), transform var(--anim-dur);
 }
 .star.filled { color: var(--gold); }
+
+/* Milestone stars sit on a reward's cost — reaching one unlocks a reward, so
+   they read bigger and ringed, like a badge rather than a plain pip. */
+.star.milestone {
+  font-size: 30px;
+  transform: translateY(-1px);
+}
+.star.milestoneReached {
+  color: var(--gold-deep);
+  text-shadow: 0 0 0 var(--gold-deep);
+  background: var(--gold-soft, rgba(242, 182, 50, 0.25));
+  border-radius: 50%;
+  padding: 2px;
+  box-shadow: 0 0 0 2px var(--gold);
+}
 
 /* The single way into the rewards screen. Teal — it is an action. */
 .claimOpenBtn {
@@ -166,9 +181,10 @@
   transition: transform var(--anim-dur), background var(--anim-dur);
 }
 .rewardRow:active { transform: scale(0.98); }
-/* Cannot afford yet: faded and not pressable. */
+/* Cannot afford yet: gently dimmed but still clearly visible, so the child
+   can see what they could earn later. Not pressable. */
 .rewardRow.locked {
-  opacity: 0.5;
+  opacity: 0.78;
   border-color: var(--line);
   cursor: default;
 }
