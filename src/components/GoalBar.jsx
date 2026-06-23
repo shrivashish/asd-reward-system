@@ -62,6 +62,9 @@ export default function GoalBar({ childId, balance, refreshKey, onRedeem }) {
               ].join(' ')}
             >
               ★
+              {milestone && (
+                <span className={styles.milestoneFace}>{reached ? '😄' : '🙂'}</span>
+              )}
             </span>
           );
         })}

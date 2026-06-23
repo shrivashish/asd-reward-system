@@ -40,18 +40,32 @@
 .star.filled { color: var(--gold); }
 
 /* Milestone stars sit on a reward's cost — reaching one unlocks a reward, so
-   they read bigger and ringed, like a badge rather than a plain pip. */
+   they read much bigger, ringed, and carry a smiley inside: a badge, not a
+   plain pip. */
 .star.milestone {
-  font-size: 30px;
+  position: relative;
+  font-size: 46px;
   transform: translateY(-1px);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 .star.milestoneReached {
   color: var(--gold-deep);
   text-shadow: 0 0 0 var(--gold-deep);
   background: var(--gold-soft, rgba(242, 182, 50, 0.25));
   border-radius: 50%;
-  padding: 2px;
   box-shadow: 0 0 0 2px var(--gold);
+}
+/* The smiley sits centred on the star face. */
+.milestoneFace {
+  position: absolute;
+  top: 52%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 18px;
+  line-height: 1;
+  pointer-events: none;
 }
 
 /* The single way into the rewards screen. Teal — it is an action. */
@@ -184,7 +198,7 @@
 /* Cannot afford yet: gently dimmed but still clearly visible, so the child
    can see what they could earn later. Not pressable. */
 .rewardRow.locked {
-  opacity: 0.78;
+  opacity: 0.92;
   border-color: var(--line);
   cursor: default;
 }
