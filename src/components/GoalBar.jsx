@@ -93,10 +93,10 @@ export default function GoalBar({ childId, balance, refreshKey, onRedeem }) {
           onClick={() => setShowRewards(false)}
         >
           <div className={styles.rewardsSheet} onClick={e => e.stopPropagation()}>
-            <h2 className={styles.rewardsTitle}>Your rewards</h2>
+            <h2 className={styles.rewardsTitle}>🎁 Pick your reward</h2>
             <p className={styles.rewardsHint}>
-              You have <strong>{balance} ★</strong> to spend. Tap one you have enough
-              stars for.
+              You have <strong className={styles.hintStars}>{balance} ★</strong>! Tap a
+              glowing one to claim it.
             </p>
 
             <div className={styles.rewardsList}>
@@ -105,7 +105,7 @@ export default function GoalBar({ childId, balance, refreshKey, onRedeem }) {
                 return (
                   <button
                     key={r.id}
-                    className={`${styles.rewardRow} ${ready ? '' : styles.locked}`}
+                    className={`${styles.rewardRow} ${ready ? styles.rewardReady : styles.locked}`}
                     onClick={() => ready && setClaim(r)}
                     disabled={!ready}
                     aria-label={
@@ -115,16 +115,19 @@ export default function GoalBar({ childId, balance, refreshKey, onRedeem }) {
                     }
                   >
                     <span className={styles.rewardImg}>
-                      <ImageDisplay imageId={r.imageId} emoji={r.emoji} size={44} alt={r.label} />
+                      <ImageDisplay imageId={r.imageId} emoji={r.emoji} size={64} alt={r.label} />
                     </span>
                     <span className={styles.rewardRowInfo}>
                       <span className={styles.rewardRowLabel}>{r.label}</span>
                       <span className={styles.rewardRowCost}>{r.cost} ★</span>
                     </span>
                     {ready ? (
-                      <span className={styles.rewardRowAction}>Claim</span>
+                      <span className={styles.rewardRowAction}>Claim&nbsp;🎉</span>
                     ) : (
-                      <span className={styles.rewardRowLock}>{r.cost - balance} more ★</span>
+                      <span className={styles.rewardRowLock}>
+                        <span className={styles.lockEmoji} aria-hidden="true">🔒</span>
+                        {r.cost - balance} more ★
+                      </span>
                     )}
                   </button>
                 );

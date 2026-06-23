@@ -190,51 +190,65 @@
 }
 .rewardsTitle {
   font-family: var(--font-display);
-  font-size: 24px;
+  font-size: 27px;
   color: var(--ink);
   text-align: center;
   margin: 0;
 }
 .rewardsHint {
-  font-size: 14px;
+  font-size: 15px;
   color: var(--ink-soft);
   text-align: center;
   margin: 0;
 }
+.hintStars {
+  font-family: var(--font-display);
+  color: var(--gold-deep);
+}
 .rewardsList {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
   overflow-y: auto;
+  padding: 2px;
 }
+
+/* Big, image-first reward cards. Claimable ones glow gold and invite a tap;
+   locked ones stay bright so the child can see what is coming. */
 .rewardRow {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
   width: 100%;
-  min-height: var(--tap-min);
-  padding: 10px 14px;
-  background: var(--surface-2);
-  border: 2px solid var(--gold);
-  border-radius: var(--radius);
+  min-height: 88px;
+  padding: 12px 16px;
+  background: var(--surface);
+  border: 3px solid var(--line);
+  border-radius: var(--radius-lg);
   text-align: left;
-  transition: transform var(--anim-dur), background var(--anim-dur);
+  transition: transform var(--anim-dur), box-shadow var(--anim-dur);
 }
-.rewardRow:active { transform: scale(0.98); }
-/* Cannot afford yet: gently dimmed but still clearly visible, so the child
-   can see what they could earn later. Not pressable. */
+.rewardRow:active { transform: scale(0.97); }
+
+.rewardReady {
+  border-color: var(--gold);
+  background: var(--gold-soft, rgba(242, 182, 50, 0.14));
+  box-shadow: 0 0 0 4px var(--gold-soft, rgba(242, 182, 50, 0.22));
+}
+
+/* Cannot afford yet: bright image, calm chrome, gentle lock. Not pressable. */
 .rewardRow.locked {
   opacity: 0.92;
-  border-color: var(--line);
   cursor: default;
 }
 .rewardRow.locked:active { transform: none; }
+
 .rewardImg {
-  width: 52px;
-  height: 52px;
+  width: 72px;
+  height: 72px;
   border-radius: 50%;
   background: var(--surface);
-  border: 2px solid var(--gold);
+  border: 3px solid var(--gold);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -242,33 +256,44 @@
   flex-shrink: 0;
 }
 .locked .rewardImg { border-color: var(--line); }
+
 .rewardRowInfo {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 3px;
   flex: 1 1 auto;
   min-width: 0;
 }
 .rewardRowLabel {
   font-family: var(--font-display);
-  font-size: 17px;
+  font-size: 21px;
   color: var(--ink);
   line-height: 1.15;
 }
-.rewardRowCost { font-size: 13px; color: var(--ink-soft); }
+.rewardRowCost {
+  font-family: var(--font-display);
+  font-size: 15px;
+  color: var(--gold-deep);
+}
 .rewardRowAction {
   flex-shrink: 0;
   font-family: var(--font-display);
-  font-size: 16px;
+  font-size: 18px;
   color: white;
   background: var(--gold);
   border-radius: var(--radius-pill);
-  padding: 8px 16px;
+  padding: 12px 18px;
+  box-shadow: 0 3px 0 var(--gold-deep);
 }
 .rewardRowLock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
   flex-shrink: 0;
-  font-size: 13px;
-  font-weight: 700;
+  font-family: var(--font-display);
+  font-size: 14px;
   color: var(--ink-soft);
   white-space: nowrap;
 }
+.lockEmoji { font-size: 20px; line-height: 1; }
