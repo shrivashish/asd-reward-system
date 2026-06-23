@@ -185,8 +185,8 @@
   flex-direction: column;
   gap: 12px;
   width: 100%;
-  max-width: 420px;
-  max-height: 82vh;
+  max-width: min(720px, 92vw);
+  max-height: 88vh;
   box-shadow: var(--shadow);
 }
 .rewardsTitle {
@@ -208,9 +208,10 @@
   color: var(--gold-deep);
   white-space: nowrap;
 }
+/* The grid grows with the sheet: two tiles on a phone, more on wider screens. */
 .rewardsList {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   gap: 12px;
   overflow-y: auto;
   padding: 2px;
