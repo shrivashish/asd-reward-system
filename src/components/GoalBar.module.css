@@ -208,29 +208,29 @@
   color: var(--gold-deep);
   white-space: nowrap;
 }
-/* The grid grows with the sheet: two tiles on a phone, more on wider screens. */
+/* Mobile-first: a simple list of horizontal reward rows, so the label and
+   the Claim button always have room. On wider screens this becomes a grid of
+   tiles (see the media query below). */
 .rewardsList {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  gap: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
   overflow-y: auto;
   padding: 2px;
 }
 
-/* Big, image-first reward tiles in a grid. Claimable ones glow gold and
-   invite a tap; locked ones stay bright so the child can see what is coming. */
 .rewardRow {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  gap: 8px;
+  gap: 14px;
   width: 100%;
-  min-height: 88px;
-  padding: 14px 12px;
+  min-height: var(--tap-min);
+  padding: 12px 14px;
   background: var(--surface);
   border: 3px solid var(--line);
   border-radius: var(--radius-lg);
-  text-align: center;
+  text-align: left;
   transition: transform var(--anim-dur), box-shadow var(--anim-dur);
 }
 .rewardRow:active { transform: scale(0.97); }
@@ -249,8 +249,8 @@
 }
 
 .rewardImg {
-  width: 72px;
-  height: 72px;
+  width: 64px;
+  height: 64px;
   border-radius: 50%;
   background: var(--surface);
   border: 3px solid var(--gold);
@@ -265,9 +265,9 @@
 .rewardRowInfo {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   gap: 2px;
-  width: 100%;
+  flex: 1 1 auto;
   min-width: 0;
 }
 .rewardRowLabel {
@@ -285,14 +285,13 @@
   line-height: 1.1;
 }
 .rewardRowAction {
-  margin-top: auto;
-  width: 100%;
+  flex-shrink: 0;
   font-family: var(--font-display);
   font-size: 18px;
   color: white;
   background: var(--gold);
   border-radius: var(--radius-pill);
-  padding: 10px 14px;
+  padding: 12px 18px;
   box-shadow: 0 3px 0 var(--gold-deep);
 }
 .rewardRowLock {
@@ -300,7 +299,7 @@
   align-items: center;
   justify-content: center;
   gap: 4px;
-  margin-top: auto;
+  flex-shrink: 0;
   font-family: var(--font-display);
   font-size: 17px;
   font-weight: 700;
@@ -308,3 +307,25 @@
   white-space: nowrap;
 }
 .lockEmoji { font-size: 18px; line-height: 1; }
+
+/* Roomier screens: switch the list into a grid of image-first tiles, with the
+   image on top and the action pinned to the bottom so tiles line up. */
+@media (min-width: 540px) {
+  .rewardsList {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 12px;
+  }
+  .rewardRow {
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    min-height: 88px;
+    padding: 16px 12px;
+    text-align: center;
+  }
+  .rewardImg { width: 72px; height: 72px; }
+  .rewardRowInfo { align-items: center; width: 100%; }
+  .rewardRowAction { margin-top: auto; width: 100%; padding: 10px 14px; }
+  .rewardRowLock { margin-top: auto; }
+}
