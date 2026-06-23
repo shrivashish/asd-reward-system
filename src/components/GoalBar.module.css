@@ -16,9 +16,10 @@
 .headerStars { font-family: var(--font-display); font-size: 40px; color: var(--teal); line-height: 1; }
 .headerLabel { font-size: 14px; color: var(--ink-soft); }
 
-/* A horizontal track of star slots: star 1 first, the biggest reward last.
-   Slots fill left-to-right as the balance climbs; reward stars carry their
-   image. The track wraps onto the next line when the ladder is long. */
+/* A horizontal track of star slots: star 1 first, the biggest reward's cost
+   last. Slots fill left-to-right as the balance climbs — pure progress, with
+   no rewards inside. The track wraps onto the next line when the ladder is
+   long. Rewards are claimed from the button below. */
 .column {
   display: flex;
   flex-direction: row;
@@ -38,54 +39,32 @@
 }
 .star.filled { color: var(--gold); }
 
-.rewardStar {
-  flex: 0 0 auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 3px;
-  padding: 6px 8px;
-  background: var(--surface-2);
-  border: 2px solid var(--line);
-  border-radius: var(--radius);
-  transition: border-color var(--anim-dur), background var(--anim-dur), transform var(--anim-dur);
-}
-.rewardStar:active { transform: scale(0.96); }
-.rewardStar.filled { background: var(--surface); }
-.rewardStar.ready {
-  border-color: var(--gold);
-  background: var(--surface);
-  box-shadow: 0 0 0 3px var(--gold-soft, rgba(242, 182, 50, 0.25));
-}
-.rewardImg {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  background: var(--surface);
-  border: 2px solid var(--gold);
+/* The single way into the rewards screen. Teal — it is an action. */
+.claimOpenBtn {
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
-  flex-shrink: 0;
-}
-.rewardMeta { display: flex; flex-direction: column; align-items: center; min-width: 0; }
-.rewardLabel {
+  gap: 10px;
+  width: 100%;
+  min-height: var(--tap-min);
+  margin-top: 8px;
+  background: var(--teal);
+  color: white;
   font-family: var(--font-display);
-  font-size: 13px;
-  color: var(--ink);
-  line-height: 1.1;
-  max-width: 80px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  font-size: 20px;
+  border-radius: var(--radius);
+  transition: background var(--anim-dur);
 }
-.rewardCost { font-size: 12px; color: var(--ink-soft); }
-.readyTag {
-  font-size: 11px;
+.claimOpenBtn:active { background: var(--teal-deep); }
+.claimOpenLabel { line-height: 1; }
+.readyCount {
+  font-family: var(--font-body);
+  font-size: 13px;
   font-weight: 700;
-  color: var(--gold-deep);
-  white-space: nowrap;
+  color: var(--teal-deep);
+  background: var(--gold);
+  border-radius: var(--radius-pill);
+  padding: 3px 10px;
 }
 
 .noGoal {
@@ -139,4 +118,101 @@
   color: var(--ink-soft);
   border-radius: var(--radius);
   font-weight: 700;
+}
+
+/* Rewards screen — every reward, with the ones you cannot afford faded out. */
+.rewardsSheet {
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  max-width: 360px;
+  max-height: 80vh;
+  box-shadow: var(--shadow);
+}
+.rewardsTitle {
+  font-family: var(--font-display);
+  font-size: 24px;
+  color: var(--ink);
+  text-align: center;
+  margin: 0;
+}
+.rewardsHint {
+  font-size: 14px;
+  color: var(--ink-soft);
+  text-align: center;
+  margin: 0;
+}
+.rewardsList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow-y: auto;
+}
+.rewardRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: var(--tap-min);
+  padding: 10px 14px;
+  background: var(--surface-2);
+  border: 2px solid var(--gold);
+  border-radius: var(--radius);
+  text-align: left;
+  transition: transform var(--anim-dur), background var(--anim-dur);
+}
+.rewardRow:active { transform: scale(0.98); }
+/* Cannot afford yet: faded and not pressable. */
+.rewardRow.locked {
+  opacity: 0.5;
+  border-color: var(--line);
+  cursor: default;
+}
+.rewardRow.locked:active { transform: none; }
+.rewardImg {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 2px solid var(--gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.locked .rewardImg { border-color: var(--line); }
+.rewardRowInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.rewardRowLabel {
+  font-family: var(--font-display);
+  font-size: 17px;
+  color: var(--ink);
+  line-height: 1.15;
+}
+.rewardRowCost { font-size: 13px; color: var(--ink-soft); }
+.rewardRowAction {
+  flex-shrink: 0;
+  font-family: var(--font-display);
+  font-size: 16px;
+  color: white;
+  background: var(--gold);
+  border-radius: var(--radius-pill);
+  padding: 8px 16px;
+}
+.rewardRowLock {
+  flex-shrink: 0;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink-soft);
+  white-space: nowrap;
 }
