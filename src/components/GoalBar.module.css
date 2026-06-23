@@ -203,7 +203,9 @@
 }
 .hintStars {
   font-family: var(--font-display);
+  font-size: 22px;
   color: var(--gold-deep);
+  white-space: nowrap;
 }
 .rewardsList {
   display: grid;
@@ -272,10 +274,13 @@
   color: var(--ink);
   line-height: 1.15;
 }
+/* The star cost is the thing the child earns toward — make it loud. */
 .rewardRowCost {
   font-family: var(--font-display);
-  font-size: 15px;
+  font-size: 24px;
+  font-weight: 700;
   color: var(--gold-deep);
+  line-height: 1.1;
 }
 .rewardRowAction {
   margin-top: auto;
@@ -295,8 +300,9 @@
   gap: 4px;
   margin-top: auto;
   font-family: var(--font-display);
-  font-size: 14px;
+  font-size: 17px;
+  font-weight: 700;
   color: var(--ink-soft);
   white-space: nowrap;
 }
-.lockEmoji { font-size: 20px; line-height: 1; }
+.lockEmoji { font-size: 18px; line-height: 1; }
